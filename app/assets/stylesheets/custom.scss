@@ -1,0 +1,24 @@
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
+
+body{
+    #container{
+        margin-bottom:50px;
+        .top_page_area{
+            text-align:center;
+            background-color:#c0c0c0;
+            margin-top:10px;
+            width:70%;
+            margin-left:15%;
+            padding:20px;
+            padding-bottom:20px;
+            a{
+                margin-bottom:10px;
+            }
+        }
+    }
+    #debugger{
+        width:70%;
+        margin-left:15%;
+    }
+}

@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>KintaibApp</title>
+    <!---各ページのタイトル対応-->
+    
+    <title><%=app_title(yield(:title)) %></title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -9,6 +11,11 @@
   </head>
 
   <body>
-    <%= yield %>
+    <article id="container">
+       <%= yield %>
+    </article>
+    <div id="debugger">
+      <%=debug(params) %>
+    </div>
   </body>
 </html>
