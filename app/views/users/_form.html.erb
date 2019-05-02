@@ -1,0 +1,36 @@
+<div class="alert alert-danger"><%=flash[:danger] %></div>
+<% if @user.errors.any? %>
+<% @user.errors.full_messages.each do |error| %>
+   <p class="error_message"><%=error %></p>
+<% end %>
+<% end %>
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+       
+        <%=form_for(@user) do |form| %>
+        
+           <%=form.label "名前" %>
+           <%=form.text_field :name,class:"form-control" %>
+           
+           <%=form.label "メールアドレス" %>
+           <%=form.email_field :email,class:"form-control" %>
+           
+           <%=form.label "所属" %>
+           <%=form.text_field :belongs,class:"form-control" %>
+           
+           <%=form.label "パスワード" %>
+           <%=form.password_field :password,class:"form-control" %>
+           
+           <%=form.label "パスワード確認" %>
+           <%=form.password_field :password_confirmation,class:"form-control" %><br>
+           
+           <div style="text-align:center;">
+               <%=form.submit yield(:button),class:"btn btn-primary btn-block" %>
+           </div>
+           
+           
+        <% end %>
+    </div>
+    
+</div>

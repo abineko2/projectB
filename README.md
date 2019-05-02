@@ -1,2 +1,2 @@
 勤怠B
-gem 修正(bootstrap)
+user action 追加
