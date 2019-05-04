@@ -38,5 +38,42 @@ body{
             padding:12px;
         }
     }
-    
+    header{
+        background-color:#000;
+        padding:4px;
+        .header_left{
+            float:left;
+            color:#fff;
+            h1{
+                margin-left:100px;
+                margin-top:10px;
+            }
+        }
+        .nav{
+            float:right;
+            margin-right:200px;
+            margin-top:20px;
+            font-size:16px;
+            #right-left{
+                float:left;
+                padding-left:20px;
+            }
+            #right-right{
+                float:right;
+                  padding-left:20px;
+                
+            }
+            #right-empty{
+                clear:both;
+                overflow:hidden;
+            }
+            
+            
+        }
+        .empty{
+            clear:both;
+            overflow:hidden;
+        }
+    }
+
 }
