@@ -1,1 +1,9 @@
-<li><%=user.name %></li>
+<li>
+    <div class="list_name">
+        <%=link_to user.name,user %>
+    </div>
+    <div class="list_info">
+        <%=link_to "基本情報修正",basic_info_path(user) %>
+    </div>
+    <div class="list_empty"></div>
+</li>

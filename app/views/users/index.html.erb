@@ -3,8 +3,9 @@
 <div class="main_title">
      <h1>ユーザー一覧</h1>
 </div>
-
-<ul class="members">
-    <%=render @users %>
-    
-</ul>
+<%=will_paginate @users %>
+<div class="list_container">
+    <ul class="members">
+       <%=render @users %>
+    </ul>
+</div>

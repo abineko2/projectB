@@ -57,6 +57,13 @@ body{
             #right-left{
                 float:left;
                 padding-left:20px;
+                ul{
+                  list-style:none;
+                  li{
+                      display:inline-block;
+                      margin-left:30px;
+                  }
+                }
             }
             #right-right{
                 float:right;
@@ -75,5 +82,19 @@ body{
             overflow:hidden;
         }
     }
+    .list_container{
+         margin-left:10%;
+        .list_name{
+        float:left;
+    }
+    .list_info{
+        float:right;
+    }
+    .list_empty{
+        clear:both;
+        overflow:hidden;
+    }
+    }
+    
 
 }
