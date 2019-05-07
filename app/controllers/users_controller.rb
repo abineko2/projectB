@@ -38,7 +38,7 @@ class UsersController < ApplicationController
   def editBasicInfo  #基本情報編集ページ
   end
   
-  def updateBasicInfo
+  def updateBasicInfo  #基本情報update
     if @user.update_attributes(basic_info_parameter)
       flash[:info]="編集しました"
       redirect_to @user
@@ -47,7 +47,20 @@ class UsersController < ApplicationController
     end  
   end  
   
-  def show
+  def show  #勤怠ページ
+    if params[:first_day].nil?
+        @first_day=Date.today.beginning_of_month     
+    else
+       @first_day=Date.parse(params[:first_day])
+    end  
+    @last_day=@first_day.end_of_month
+    (@first_day..@last_day).each do |day|
+      unless @user.attendances.any?{|attendance| attendance.worked_on==day}
+        record=@user.attendances.build(worked_on:day)
+        record.save
+      end
+    end  
+    @dates=setDate
   end
   
 private
