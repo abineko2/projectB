@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :log_in_user,only:[:index,:edit,:update]
-  before_action :current_user_check,only:[:edit,:update] 
+  before_action :current_user_check,only:[:edit,:update,:show] 
   before_action :find_user,only:[:edit_basic_info,:updateBasicInfo,:show]
   
   def index    #一覧
@@ -38,7 +38,7 @@ class UsersController < ApplicationController
   def editBasicInfo  #基本情報編集ページ
   end
   
-  def updateBasicInfo
+  def updateBasicInfo  #基本情報update
     if @user.update_attributes(basic_info_parameter)
       flash[:info]="編集しました"
       redirect_to @user
@@ -47,12 +47,25 @@ class UsersController < ApplicationController
     end  
   end  
   
-  def show
+  def show  #勤怠ページ
+    if params[:first_day].nil?
+        @first_day=Date.today.beginning_of_month     
+    else
+       @first_day=Date.parse(params[:first_day])
+    end  
+    @last_day=@first_day.end_of_month
+    (@first_day..@last_day).each do |day|
+      unless @user.attendances.any?{|attendance| attendance.worked_on==day}
+        record=@user.attendances.build(worked_on:day)
+        record.save
+      end
+    end  
+    @dates=setDate
   end
   
 private
   def user_parameter   #form送信時parameter
-     params.require(:user).permit(:name,:email,:password,:password_confirmation)  
+     params.require(:user).permit(:name,:email,:password,:password_confirmation,:belongs)  
   end
   
   def basic_info_parameter

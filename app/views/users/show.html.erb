@@ -1,1 +1,66 @@
 <%=provide(:title,"#{@user.name}") %>
+
+<div style="margin-top:10px;margin-left:15%;width:70%;">
+    <table class="table table-bordered">
+    <tr>
+        <td>
+            <%=link_to "←",user_path(id:@user.id,params:{first_day:@first_day.prev_month}),class:"btn btn-primary" %>
+            &emsp;<%=@first_day.to_s(:hour_month) %>&emsp;
+             時間管理表
+            &emsp; 
+            <%=link_to "→",user_path(id:@user.id,params:{first_day:@first_day.next_month}),class:"btn btn-primary" %> 
+        </td>
+        <td><%="指定勤務時間   #{time_format(@user.appoint_time)}" %></td>
+        <td colspan="3"><%="基本時間   #{time_format(@user.basic_time)}" %></td>
+        <td colspan="3">初日&emsp;<%=@first_day.to_s(:date2) %></td>
+    </tr>
+    <tr>
+        <td>所属 : <%=@user.belongs.present? ? "#{@user.belongs}" : "無所属"  %></td>
+        <td><%="氏名 : #{@user.name}" %></td>
+        <td>コード</td>
+        <td></td>
+        <td>出勤日数</td>
+        <td>締め&emsp;<%=@last_day.to_s(:date2) %></td>
+    </tr>
+</table>
+</div>
+<div style="margin-top:10px;margin-left:15%;width:70%;">
+    <table class="table table-bordered table-condensed table-striped ">
+        <thead>
+            <tr>
+                <th rowspan="2">日付</th>
+                <th rowspan="2">曜日</th>
+                <th colspan="3">出勤時間</th>
+                <th colspan="3">退勤時間</th>
+                <th rowspan="2">在社時間</th>
+                <th rowspan="2">備考</th>
+            </tr>
+            <tr>
+                <th>時</th>
+                <th>分</th>
+                <th></th>
+                
+                <th>時</th>
+                <th>分</th>
+                <th></th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <% @dates.each do |day| %>
+              <tr>
+                  <td><%=day.worked_on.to_s(:date) %></td>
+                  <td><%=%w(日 月 火 水 木 金 土)[day.worked_on.wday] %></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+              </tr>
+            <% end %>
+        </tbody>
+    </table>
+</div>
