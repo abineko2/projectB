@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :log_in_user,only:[:index,:edit,:update]
-  before_action :current_user_check,only:[:edit,:update] 
+  before_action :current_user_check,only:[:edit,:update,:show] 
   before_action :find_user,only:[:edit_basic_info,:updateBasicInfo,:show]
   
   def index    #一覧
@@ -52,7 +52,7 @@ class UsersController < ApplicationController
   
 private
   def user_parameter   #form送信時parameter
-     params.require(:user).permit(:name,:email,:password,:password_confirmation)  
+     params.require(:user).permit(:name,:email,:password,:password_confirmation,:belongs)  
   end
   
   def basic_info_parameter
