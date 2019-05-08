@@ -19,7 +19,7 @@
         <td><%="氏名 : #{@user.name}" %></td>
         <td>コード</td>
         <td></td>
-        <td>出勤日数</td>
+        <td>出勤日数&emsp;<%="#{@count}日" %></td>
         <td>締め&emsp;<%=@last_day.to_s(:date2) %></td>
     </tr>
 </table>
@@ -51,16 +51,38 @@
               <tr>
                   <td><%=day.worked_on.to_s(:date) %></td>
                   <td><%=%w(日 月 火 水 木 金 土)[day.worked_on.wday] %></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <td><%=day.start_at.to_s(:hour) if day.start_at.present? %></td>
+                  <td><%=day.start_at.to_s(:min) if day.start_at.present? %></td>
+                  <td>
+                      <% if day.worked_on==Date.today && day.start_at==nil %>
+                        <%=button_to "出勤",user_attendances_path(@user),class:"btn btn-primary btn-block" %>
+                      <% end %>
+                  </td>
+                  <td><%=day.finished_at.to_s(:hour) if day.finished_at.present? %></td>
+                  <td><%=day.finished_at.to_s(:min) if day.finished_at.present? %></td>
+                  <td>
+                      <% if day.worked_on==Date.today && day.start_at.present? && day.finished_at==nil %>
+                        <%=button_to "退勤",user_attendances_path(@user),class:"btn btn-primary btn-block" %>
+                      <% end %>
+                  </td>
+                  <td>
+                      <% if day.start_at.present? && day.finished_at.present? %>
+                        <%=working_time(day.finished_at,day.start_at) %>
+                        <% num=(day.finished_at-day.start_at).to_i %>
+                        <% @total=@total.to_i+num %>
+                      <% end %>
+                  </td>
                   <td></td>
               </tr>
             <% end %>
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2"><%=time_format(@user.basic_time).to_f*@count %></td>
+                <td colspan="6"></td>
+                <td><%= working_time_sum(@total) unless @total.nil? %></td>
+                <td>所属長承認</td>
+            </tr>
+        </tfoot>
     </table>
 </div>

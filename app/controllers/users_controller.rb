@@ -1,7 +1,9 @@
 class UsersController < ApplicationController
   before_action :log_in_user,only:[:index,:edit,:update]
-  before_action :current_user_check,only:[:edit,:update,:show] 
+  before_action :current_user_check,only:[:edit,:update] 
   before_action :find_user,only:[:edit_basic_info,:updateBasicInfo,:show]
+  before_action :admin_user,only:[:show]
+  
   
   def index    #一覧
     @users=User.paginate(page:params[:page])
@@ -61,6 +63,7 @@ class UsersController < ApplicationController
       end
     end  
     @dates=setDate
+    @count=@dates.where.not(start_at:nil).count
   end
   
 private
@@ -88,4 +91,10 @@ private
   def find_user
      @user=User.find(params[:id])
   end
+  def admin_user
+    if !current_user.admin? && !current_user?(find_user)
+      flash[:danger]="管理者以外アクセスできません"
+      redirect_to root_path 
+    end
+  end    
 end

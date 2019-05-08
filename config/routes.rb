@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   patch 'updateBasicInfo',to:'users#updateBasicInfo'
 
   root 'top_pages#home'
-  resources :users
-  
+  resources :users do
+    resources :attendances,only: :create
+  end 
 end
