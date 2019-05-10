@@ -11,5 +11,35 @@ class AttendancesController < ApplicationController
             @attendance.update_attributes(finished_at:current_time)
         end
         redirect_to @user
-    end    
+    end  
+    def edit
+        @user=User.find(params[:id])
+        if params[:first_day].nil?
+           @first_day=Date.today.beginning_of_month     
+        else
+           @first_day=Date.parse(params[:first_day])
+        end  
+        @last_day=@first_day.end_of_month
+        @dates=setDate
+    end
+    def update
+        @user=User.find(params[:id])
+        
+        if attendances_invalid?
+            parameter.each do |id,item|
+                attendance=Attendance.find(id)
+                attendance.update_attributes(item)
+            end
+            flash[:success]="編集しました"
+            redirect_to user_url(@user,params:{first_day:params[:date]})
+        else
+            flash[:danger]="編集失敗しました"
+            redirect_to edit_attendances_path(@user,params[:date])
+        end        
+    end
+private
+   def parameter
+      params.permit(attendances:[:start_at,:finished_at,:note])[:attendances] 
+   end
+    
 end

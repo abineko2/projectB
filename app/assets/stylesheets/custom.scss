@@ -99,6 +99,15 @@ body{
         text-align:center;
         font-weight:bold;
     }
-    
+    .button_field{
+        text-align:center;
+        ul{
+            list-style:none;
+            li{
+                 display:inline;
+            }
+           
+        }
+    }
 
 }

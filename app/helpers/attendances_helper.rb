@@ -14,7 +14,24 @@ module AttendancesHelper
     def working_time(finish,start) #在社時間
         format("%.2f",(((finish-start)/60)/60.0))
     end 
-    def working_time_sum(total)
+    def working_time_sum(total)  #在社時間合計
         format("%.2f",total/60/60.0)
     end    
+    
+    def attendances_invalid?
+        attend=true
+        parameter.each do |id,item|
+            if item[:start_at].blank? && item[:finished_at].blank?
+                next
+            elsif item[:start_at].blank? || item[:finished_at].blank?
+               attend=false
+               break
+            elsif item[:start_at] > item[:finished_at]
+                attend=false
+                break
+            end
+            
+        end
+        return attend
+    end
 end
