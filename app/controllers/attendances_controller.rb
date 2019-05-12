@@ -1,5 +1,6 @@
 class AttendancesController < ApplicationController
     before_action :page_block,only:[:edit,:update]
+    before_action :startLogin
     def create       #出退勤時間表示
     
         @user=User.find(params[:user_id])

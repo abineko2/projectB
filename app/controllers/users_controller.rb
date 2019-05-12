@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   before_action :find_user,only:[:edit_basic_info,:updateBasicInfo,:show]
   before_action :admin_user,only:[:index]
   before_action :page_block,only:[:show]
-  
+  before_action :startLogin
   
   
   def index    #一覧
@@ -111,8 +111,11 @@ private
   end
   def page_block
        @user=User.find(params[:id])
-       if !current_user.admin?
+       if login?
+         if !current_user.admin? 
            redirect_to root_url  unless current_user?(@user)
-       end       
+         end     
+       end    
+         
   end
 end

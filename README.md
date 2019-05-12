@@ -1,2 +1,2 @@
 勤怠B
-追加機能1~6
+自作validate修正,checkbox

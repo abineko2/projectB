@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
-  
+   before_action :startLogin
+   
   def new  #ログインページ
   
   end
@@ -7,7 +8,12 @@ class SessionsController < ApplicationController
   def create
     user=User.find_by(email:params[:session][:email])
     if user && user.authenticate(params[:session][:password])
-       login(user)
+      if params[:session][:check].to_i==1
+         cookiesLogin(user)
+      else
+         login(user)
+      end  
+      
        flash[:success] = "ログインしました"
         redirect_save_url user
     else
@@ -18,6 +24,7 @@ class SessionsController < ApplicationController
   
   def destroy
     session.delete(:user_id)
+    cookies.delete :user_id
     redirect_to login_url
   end
   
