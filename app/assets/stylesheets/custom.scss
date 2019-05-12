@@ -84,17 +84,12 @@ body{
     }
     .list_container{
          margin-left:10%;
+         width:70%;
         .list_name{
-        float:left;
-    }
-    .list_info{
-        float:right;
-    }
-    .list_empty{
-        clear:both;
-        overflow:hidden;
-    }
-    }
+       
+         }
+    
+      }
     .table{
         text-align:center;
         font-weight:bold;
@@ -109,5 +104,34 @@ body{
            
         }
     }
+   .page_area{
+        .pages{
+           float:left;
+           margin-left:100px;
+           margin-top:70px;
+       }
+        .seach{
+            float:right;
+            margin-top:30px;
+            margin-right:100px;
+            ul{
+                margin:0;
+                padding:0;
+                list-style:none;
+                li{
+                    display:inline-block;
+                    input[type="text"]{
+                        padding-left:50px;
+                        padding-right:50px;
+                    }
+                    
+                }
+            }
+        }
+   }
+   .page-empty{
+       clear:both;
+       overflow:hidden;
+   }
 
 }

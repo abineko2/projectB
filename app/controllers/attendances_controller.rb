@@ -1,4 +1,5 @@
 class AttendancesController < ApplicationController
+    before_action :page_block,only:[:edit,:update]
     def create       #出退勤時間表示
     
         @user=User.find(params[:user_id])
@@ -24,7 +25,6 @@ class AttendancesController < ApplicationController
     end
     def update
         @user=User.find(params[:id])
-        
         if attendances_invalid?
             parameter.each do |id,item|
                 attendance=Attendance.find(id)
@@ -40,6 +40,12 @@ class AttendancesController < ApplicationController
 private
    def parameter
       params.permit(attendances:[:start_at,:finished_at,:note])[:attendances] 
+   end
+   def page_block
+       @user=User.find(params[:id])
+       if !current_user.admin?
+           redirect_to root_url  unless current_user?(@user)
+       end       
    end
     
 end

@@ -21,6 +21,9 @@ module AttendancesHelper
     def attendances_invalid?
         attend=true
         parameter.each do |id,item|
+            attendance=Attendance.find(id)
+            day=Date.today
+            
             if item[:start_at].blank? && item[:finished_at].blank?
                 next
             elsif item[:start_at].blank? || item[:finished_at].blank?
@@ -29,7 +32,11 @@ module AttendancesHelper
             elsif item[:start_at] > item[:finished_at]
                 attend=false
                 break
+            elsif attendance.worked_on>day
+                 attend=false
+                break        
             end
+            
             
         end
         return attend

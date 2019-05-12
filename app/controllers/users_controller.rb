@@ -2,11 +2,18 @@ class UsersController < ApplicationController
   before_action :log_in_user,only:[:index,:edit,:update]
   before_action :current_user_check,only:[:edit,:update] 
   before_action :find_user,only:[:edit_basic_info,:updateBasicInfo,:show]
-  before_action :admin_user,only:[:show]
+  before_action :admin_user,only:[:index]
+  before_action :page_block,only:[:show]
+  
   
   
   def index    #一覧
     @users=User.paginate(page:params[:page])
+    if request.post?
+       @users=@users.where 'name like?','%'+params[:name]+'%'
+       
+    end    
+   
   end
 
   def new      #新規登録ページ
@@ -35,6 +42,11 @@ class UsersController < ApplicationController
     else
       render :edit
     end  
+  end
+  
+  def destroy    #ユーザー削除
+    User.find(params[:id]).destroy
+    redirect_to users_url
   end
   
   def editBasicInfo  #基本情報編集ページ
@@ -92,9 +104,15 @@ private
      @user=User.find(params[:id])
   end
   def admin_user
-    if !current_user.admin? && !current_user?(find_user)
+    if !current_user.admin? 
       flash[:danger]="管理者以外アクセスできません"
       redirect_to root_path 
     end
-  end    
+  end
+  def page_block
+       @user=User.find(params[:id])
+       if !current_user.admin?
+           redirect_to root_url  unless current_user?(@user)
+       end       
+  end
 end

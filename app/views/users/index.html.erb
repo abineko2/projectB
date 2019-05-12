@@ -1,9 +1,28 @@
 <%=provide(:title,"新規アカウント登録") %>
-
+<% casedata=User.all %>
 <div class="main_title">
-     <h1>ユーザー一覧</h1>
+    <% if @users.count==casedata.count %>
+     <h1>すべてのユーザー</h1>
+    <% else %>
+      <h1>検索結果</h1>
+    <% end %> 
 </div>
-<%=will_paginate @users %>
+<div class="page_area">
+    <div class="pages">
+       <%=will_paginate @users %> 
+    </div>
+    <div class="seach">
+        <label>ユーザー名検索</label><br>
+        <ul>
+           <%=form_tag(action:'index') do %>
+             <li><%=search_field_tag :name,"",placeholder:"キーワードを入力",class:"form-control"  %> </li>
+             <li><%=submit_tag "検索",class:"btn btn-primary" %></li>
+           <% end %>
+        </ul>
+    </div>
+    <div class="page-empty"></div>
+</div>
+
 <div class="list_container">
     <ul class="members">
        <%=render @users %>

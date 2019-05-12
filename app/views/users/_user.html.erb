@@ -1,9 +1,14 @@
 <li>
     <div class="list_name">
         <%=link_to user.name,user %>
+         <%=link_to "|基本情報変更|",basic_info_path(user) %>
+        <% if current_user.admin? && !current_user?(user) %>
+         <%=link_to "削除|",user,method: :delete,data:{confirm:"削除しますか？"} %>
+        <% end %>
     </div>
     <div class="list_info">
-        <%=link_to "基本情報修正",basic_info_path(user) %>
+       
+       
     </div>
     <div class="list_empty"></div>
 </li>
