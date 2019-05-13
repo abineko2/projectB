@@ -5,7 +5,7 @@ module SessionsHelper
     end
     
     def  cookiesLogin(user)
-        cookies.signed[:user_id]={value:user.id,expires: 1.hour.from_now }
+        cookies.signed[:user_id]={value:user.id,expires: 5.hour.from_now }
     end
     
     def current_user  #ログインユーザー

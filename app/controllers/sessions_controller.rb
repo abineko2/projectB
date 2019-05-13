@@ -10,6 +10,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:session][:password])
       if params[:session][:check].to_i==1
          cookiesLogin(user)
+         login(user)
       else
          login(user)
       end  

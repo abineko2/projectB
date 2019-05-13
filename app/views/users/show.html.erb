@@ -63,24 +63,32 @@
                       <% end %>
 
                   
-                  <td><%=day.start_at.to_s(:hour) if day.start_at.present? %></td>
-                  <td><%=day.start_at.to_s(:min) if day.start_at.present? %></td>
+                  <% sh=day.start_at.to_s(:hour) if day.start_at.present? %>
+                  <td><%=sh %></td>
+                  <% sm=timeChange(day.start_at.to_s(:min).to_i).to_s(:min) if day.start_at.present? %>
+                  <td><%=sm %></td>
                   <td>
                       <% if day.worked_on==Date.today && day.start_at==nil %>
                         <%=button_to "出勤",user_attendances_path(@user),class:"btn btn-primary btn-block" %>
                       <% end %>
                   </td>
-                  <td><%=day.finished_at.to_s(:hour) if day.finished_at.present? %></td>
-                  <td><%=day.finished_at.to_s(:min) if day.finished_at.present? %></td>
+                  <% fh=day.finished_at.to_s(:hour) if day.finished_at.present? %>
+                  <td><%=fh %></td>
+                  <% fm=timeChange(day.finished_at.to_s(:min).to_i).to_s(:min) if day.finished_at.present? %>
+                  <td><%=fm %></td>
                   <td>
                       <% if day.worked_on==Date.today && day.start_at.present? && day.finished_at==nil %>
                         <%=button_to "退勤",user_attendances_path(@user),class:"btn btn-primary btn-block" %>
                       <% end %>
                   </td>
+                     <% dayNum=(day.worked_on.to_s(:days)) %>
+                     <% start=Time.zone.parse(dayNum+sh.to_s+":"+sm.to_s) %>
+                     <% finish=Time.zone.parse(dayNum+fh.to_s+":"+fm.to_s) %>
                   <td>
+                     
                       <% if day.start_at.present? && day.finished_at.present? %>
-                        <%=working_time(day.finished_at,day.start_at) %>
-                        <% num=(day.finished_at-day.start_at).to_i %>
+                        <%=working_time(finish,start) %>
+                        <% num=(finish-start).to_i %>
                         <% @total=@total.to_i+num %>
                       <% end %>
                   </td>

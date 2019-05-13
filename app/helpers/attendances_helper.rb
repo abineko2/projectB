@@ -41,4 +41,16 @@ module AttendancesHelper
         end
         return attend
     end
+    def timeChange(min)
+        
+        num=min.to_i/15
+        min2=num.to_i*15
+        if min.to_i>min2
+            min=min2
+        end 
+        return min
+    end
+    def timeCustom(hour,min)
+        format("%.2f",(hour*60+min)/60.0)
+    end
 end

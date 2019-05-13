@@ -16,10 +16,10 @@ class AttendancesController < ApplicationController
     end  
     def edit
         @user=User.find(params[:id])
-        if params[:first_day].nil?
+        if params[:date].nil?
            @first_day=Date.today.beginning_of_month     
         else
-           @first_day=Date.parse(params[:first_day])
+           @first_day=Date.parse(params[:date])
         end  
         @last_day=@first_day.end_of_month
         @dates=setDate
