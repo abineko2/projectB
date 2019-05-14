@@ -7,3 +7,13 @@ ja:
         name: 名前
         email: メールアドレス
         password: パスワード
+        belongs : 所属
+    
+      attendance:
+        worked_on: 日にち
+        start_at: 出勤
+        finished_at: 退勤
+        note : メモ   
+    models:
+      attendance: 出席
+        
