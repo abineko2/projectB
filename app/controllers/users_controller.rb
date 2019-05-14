@@ -62,6 +62,7 @@ class UsersController < ApplicationController
   end  
   
   def show  #勤怠ページ
+    @user = User.find(params[:id])
     if params[:first_day].nil?
         @first_day=Date.today.beginning_of_month     
     else

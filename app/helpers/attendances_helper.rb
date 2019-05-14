@@ -1,6 +1,6 @@
 module AttendancesHelper
     def setDate
-        @user.attendances.where('worked_on>=? and worked_on<=?',@first_day,@last_day)
+        @user.attendances.where('worked_on>=? and worked_on<=?',@first_day,@last_day).order('worked_on ASC')
     end    
     def current_time  #現在時間
         Time.new(
