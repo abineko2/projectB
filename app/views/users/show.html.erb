@@ -10,7 +10,10 @@
             &emsp; 
             <%=link_to "→",user_path(id:@user.id,params:{first_day:@first_day.next_month}),class:"btn btn-primary" %> 
         </td>
-        <td><%="指定勤務時間   #{time_format(@user.appoint_time)}" %></td>
+        <td>
+            <%="指定勤務時間   #{time_format(@user.appoint_time)}" %><br>
+            <%="指定勤務終了時間   #{time_format(@user.appoint_time)}" %><br>
+        </td>
         <td colspan="3"><%="基本時間   #{time_format(@user.basic_time)}" %></td>
         <td colspan="3">初日&emsp;<%=@first_day.to_s(:date2) %></td>
     </tr>
@@ -24,21 +27,37 @@
     </tr>
 </table>
 <div>
-    <%=link_to "勤怠を編集",edit_attendances_path(@user,@first_day),class:"btn btn-default" %>
+    <ul style="list_style:none;">
+        <li style="display:inline;"><%=link_to "勤怠を編集",edit_attendances_path(@user,@first_day),class:"btn btn-primary" %></li>
+        <li style="display:inline;"><%=link_to "CSV出力","#",class:"btn btn-primary" %></li>
+        <li style="display:block;"><%=link_to "勤怠修正ログ(承認済)","#",class:"btn btn-primary" %></li>
+    </ul>
+   
 </div>
 </div>
 <div style="margin-top:10px;margin-left:15%;width:70%;">
     <table class="table table-bordered table-condensed table-striped ">
         <thead>
+             <tr>
+                <th rowspan="3">残業申請</th> 
+                <th rowspan="3">日付</th>
+                <th rowspan="3">曜日</th> 
+                <th colspan="7">[実績]</th>
+                <th colspan="6">所定外勤務</th>
+            </tr>
             <tr>
-                <th rowspan="2">日付</th>
-                <th rowspan="2">曜日</th>
                 <th colspan="3">出勤時間</th>
                 <th colspan="3">退勤時間</th>
                 <th rowspan="2">在社時間</th>
                 <th rowspan="2">備考</th>
+                <th colspan="2">終了予定時間</th>
+                <th rowspan="2">時間外時間</th>
+                <th rowspan="2">事務処理内容</th>
+                <th rowspan="2">指示者確認㊞</th>
             </tr>
+           
             <tr>
+                
                 <th>時</th>
                 <th>分</th>
                 <th></th>
@@ -46,12 +65,16 @@
                 <th>時</th>
                 <th>分</th>
                 <th></th>
+                
+                <th>時</th>
+                <th>分</th>
                 
             </tr>
         </thead>
         <tbody>
             <% @dates.each do |day| %>
               <tr>
+                  <td><%=button_to "残業申請","#",class:"btn btn-primary" %></td>
                   <td><%=day.worked_on.to_s(:date) %></td>
                       <% week=%w(日 月 火 水 木 金 土)[day.worked_on.wday] %>
                       <% if week["土"] %>
@@ -93,15 +116,28 @@
                       <% end %>
                   </td>
                   <td><%=day.note %></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
               </tr>
             <% end %>
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="2"><%=time_format(@user.basic_time).to_f*@count %></td>
+                <td colspan=""><%=time_format(@user.basic_time).to_f*@count %></td>
+                <td colspan="2"></td>
                 <td colspan="6"></td>
                 <td><%= working_time_sum(@total) unless @total.nil? %></td>
-                <td>所属長承認</td>
+                <td colspan="5"></td>
+                <td>
+                    所属長承認　&emsp;&emsp;未
+                    <%=form_for(@user) do |f| %>
+                      <%=f.number_field :name,class:"form-control" %><br>
+                      <%=f.submit "申請",class:"btn btn-primary" %>
+                    <% end %>
+                </td>
             </tr>
         </tfoot>
     </table>
