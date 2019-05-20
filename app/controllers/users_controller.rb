@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   
   
   def index    #一覧
-    @users=User.paginate(page:params[:page])
+    @users=User.paginate(page:params[:page]).order('created_at asc')
     if request.post?
        @users=@users.where 'name like?','%'+params[:name]+'%'
        
