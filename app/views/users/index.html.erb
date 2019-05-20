@@ -13,7 +13,7 @@
     <input type="file" class="form-control"><br>
     <input type="sumbmit" value="CSVをインポート" class="btn btn-primary">
   </form>   
- <%=will_paginate @users %> 
+ 
     </div>
     <div class="seach">
         <label>ユーザー名検索</label><br>
@@ -26,9 +26,11 @@
     </div>
     <div class="page-empty"></div>
 </div>
-
+<br>
 <div class="list_container">
     <ul class="members">
+        EXample
        <%=render @users %>
     </ul>
 </div>
+<%=will_paginate @users %> 

@@ -1,14 +1,25 @@
 <li>
+    <% @user=user %>
     <div class="list_name">
-        <%=link_to user.name,user %>
-         <%=link_to "|基本情報変更|",basic_info_path(user) %>
+        <label><%=user.name %></label><br>
         <% if current_user.admin? && !current_user?(user) %>
-         <%=link_to "削除|",user,method: :delete,data:{confirm:"削除しますか？"} %>
+        |<%=link_to "削除",user,method: :delete,data:{confirm:"削除しますか？"},class:"btn btn-primary"  %><br>
+        <dl id="edit_user">
+            <dt></dt><button id=<%=user.id %> class="btn btn-primary btn-lg" style="padding:30px;padding-top:15px;padding-bottom:15px">編集</button></dt>
+            <dd style="display:none">
+                <%=render 'form' %>
+            </dd>
         <% end %>
-    </div>
+      </dl>
     <div class="list_info">
        
        
     </div>
     <div class="list_empty"></div>
 </li>
+<script>
+    $("#<%=user.id %>").click(function(){
+        $(this).next("#edit_user dd").slideToggle();
+ 
+	});
+</script>
