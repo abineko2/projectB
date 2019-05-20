@@ -26,6 +26,13 @@
         <td>締め&emsp;<%=@last_day.to_s(:date2) %></td>
     </tr>
 </table>
+<% if @user.admin? %>
+  <div id="admin_info">
+      <h2>[所属長承認申請のお知らせ]</h2>
+      <h2>[勤怠変更承認申請のお知らせ]</h2>
+      <h2>[残業申請のお知らせ]</h2>
+  </div>
+<% end %>
 <div>
     <ul style="list_style:none;">
         <li style="display:inline;"><%=link_to "勤怠を編集",edit_attendances_path(@user,@first_day),class:"btn btn-primary" %></li>
@@ -133,10 +140,12 @@
                 <td colspan="5"></td>
                 <td>
                     所属長承認　&emsp;&emsp;未
-                    <%=form_for(@user) do |f| %>
-                      <%=f.number_field :name,class:"form-control" %><br>
-                      <%=f.submit "申請",class:"btn btn-primary" %>
-                    <% end %>
+                    <form>
+                        <select class="form-control">
+                            <option value=""><%=@first_day.to_s(:date) %></option>
+                        </select><br>
+                        <input type="submit" value="申請" class="btn btn-primary">
+                    </form>
                 </td>
             </tr>
         </tfoot>
