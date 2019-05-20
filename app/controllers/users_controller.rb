@@ -43,6 +43,15 @@ class UsersController < ApplicationController
       render :edit
     end  
   end
+  def update2 #アップデート2
+    @user=User.find(params[:id])
+    if @user.update_attributes(user_parameter)
+      flash[:success]="編集しました"
+      redirect_to users_url
+    else
+      render :edit
+    end  
+  end
   
   def destroy    #ユーザー削除
     User.find(params[:id]).destroy

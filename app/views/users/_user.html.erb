@@ -5,13 +5,20 @@
         <% if current_user.admin? && !current_user?(user) %>
         |<%=link_to "削除",user,method: :delete,data:{confirm:"削除しますか？"},class:"btn btn-primary"  %><br>
         <dl id="edit_user" style="border:1px solid #c0c0c0;
-               padding:25px;
+               width:980px;
                background-color:#f0f0f0;
+               margin:0;
+               margin-right:10px;
+               padding:0px;
+               padding-top:10px;
+               padding-bottom:10px;
                border-radius:8px;">
-            <dt></dt><button id=<%=user.id %> class="btn btn-primary btn-lg" style="padding:30px;padding-top:15px;padding-bottom:15px">編集</button></dt>
-            <dd style="display:none">
-                <%=render 'form' %>
+            </dt><button id=<%=user.id %> class="btn btn-primary btn-lg" style="padding:30px;padding-top:15px;padding-bottom:15px;
+            margin-left:10px;">編集</button></dt>
+            <dd style="display:none;background-color:#fff;width:100%;">
+                  <%=render 'form2' %>
             </dd>
+
         <% end %>
       </dl>
     <div class="list_info">

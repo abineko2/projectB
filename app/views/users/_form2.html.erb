@@ -1,0 +1,31 @@
+<%=render 'layouts/error' %>
+
+<div class="row">
+    <div class="col-md-12">
+       
+        <%=form_for(@user,url:update2_path(@user),method: :patch) do |form| %>
+        
+           <%=form.label "名前" %>
+           <%=form.text_field :name,class:"form-control" %>
+           
+           <%=form.label "メールアドレス" %>
+           <%=form.email_field :email,class:"form-control" %>
+           
+           <%=form.label "所属" %>
+           <%=form.text_field :belongs,class:"form-control" %>
+           
+           <%=form.label "パスワード" %>
+           <%=form.password_field :password,class:"form-control" %>
+           
+           <%=form.label "パスワード確認" %>
+           <%=form.password_field :password_confirmation,class:"form-control" %><br>
+           
+           <div style="text-align:center;">
+               <%=form.submit yield(:button),class:"btn btn-primary btn-block" %>
+           </div>
+           
+           
+        <% end %>
+    </div>
+    
+</div>
