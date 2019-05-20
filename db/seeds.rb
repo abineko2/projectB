@@ -6,14 +6,25 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 User.create!(name:"管理者",email:"email@sample.com",
-             password:"password",
-             password_confirmation: "password",
+             password:"password",employee_number:1,uid:"admin1",
+             password_confirmation: "password",superior:true,
              admin: true)
+User.create!(name:"上長1",email:"superior1@sample.com",
+             password:"password",employee_number:2,uid:"superior1",
+             password_confirmation: "password",superior:true,
+             admin: false)    
+User.create!(name:"上長2",email:"superior2@sample.com",
+             password:"password",employee_number:3,uid:"superior2",
+             password_confirmation: "password",superior:true,
+             admin: false)                   
+             
 
 59.times do |n|
   gimei = Gimei.new    
   name  = gimei.name.kanji
   email = "email#{n+1}@sample.com"
+  employee_number=n+4
+  uid="user#{n+4}"
   password = "password"
-  User.create!(name:name,email:email,password:password,password_confirmation:password)
+  User.create!(name:name,email:email,employee_number:employee_number,uid:uid,password:password,password_confirmation:password)
 end

@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 20190520011805) do
     t.boolean "superior", default: false
     t.datetime "appoin_end_time"
     t.integer "employee_number"
-    t.integer "uid"
+    t.string "uid"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

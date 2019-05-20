@@ -9,7 +9,11 @@
 </div>
 <div class="page_area">
     <div class="pages">
-       <%=will_paginate @users %> 
+   <form>     
+    <input type="file" class="form-control"><br>
+    <input type="sumbmit" value="CSVをインポート" class="btn btn-primary">
+  </form>   
+ <%=will_paginate @users %> 
     </div>
     <div class="seach">
         <label>ユーザー名検索</label><br>
