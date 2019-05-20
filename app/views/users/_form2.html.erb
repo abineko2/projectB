@@ -14,11 +14,25 @@
            <%=form.label "所属" %>
            <%=form.text_field :belongs,class:"form-control" %>
            
+           <%=form.label "社員番号" %>
+           <%=form.number_field :employee_number,class:"form-control" %>
+           
+           <%=form.label "カードID" %>
+           <%=form.text_field :uid,class:"form-control" %>
+           
+           
            <%=form.label "パスワード" %>
            <%=form.password_field :password,class:"form-control" %>
            
-           <%=form.label "パスワード確認" %>
-           <%=form.password_field :password_confirmation,class:"form-control" %><br>
+           
+           <%=form.label "指定勤務開始時間" %>
+           <%=form.time_field :appoint_time,class:"form-control" %>
+           
+           <%=form.label "基本勤務時間" %>
+           <%=form.time_field :basic_time,class:"form-control" %><br>
+           
+           <%=form.label "指定勤務終了時間" %>
+           <%=form.time_field :appoin_end_time,class:"form-control" %>
            
            <div style="text-align:center;">
                <%=form.submit yield(:button),class:"btn btn-primary btn-block" %>

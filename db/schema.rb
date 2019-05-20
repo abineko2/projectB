@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 20190520011805) do
     t.datetime "appoint_time", default: "2019-04-30 23:00:00"
     t.boolean "admin", default: false
     t.boolean "superior", default: false
-    t.datetime "appoin_end_time"
+    t.datetime "appoin_end_time", default: "2019-04-30 23:00:00"
     t.integer "employee_number"
     t.string "uid"
     t.index ["email"], name: "index_users_on_email", unique: true
