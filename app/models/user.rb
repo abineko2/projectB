@@ -6,5 +6,5 @@ class User < ApplicationRecord
   validates :email, presence: true, length: { maximum: 100 },format: { with: EMAIL },
                     uniqueness: { case_sensitive: false }
     validates :password,presence:true,length:{maximum:30},allow_nil:true
-    validates :belongs,length:{in: 0..30},allow_blank:true,presence:true
+    validates :affiliation,length:{in: 0..30},allow_blank:true,presence:true
 end

@@ -12,7 +12,7 @@
            <%=form.email_field :email,class:"form-control" %>
            
            <%=form.label "所属" %>
-           <%=form.text_field :belongs,class:"form-control" %>
+           <%=form.text_field :affiliation,class:"form-control" %>
            
            <%=form.label "社員番号" %>
            <%=form.number_field :employee_number,class:"form-control" %>
@@ -26,13 +26,13 @@
            
            
            <%=form.label "指定勤務開始時間" %>
-           <%=form.time_field :appoint_time,class:"form-control" %>
+           <%=form.time_field :designated_work_start_time,class:"form-control" %>
            
            <%=form.label "基本勤務時間" %>
-           <%=form.time_field :basic_time,class:"form-control" %><br>
+           <%=form.time_field :basic_work_time,class:"form-control" %><br>
            
            <%=form.label "指定勤務終了時間" %>
-           <%=form.time_field :appoin_end_time,class:"form-control" %>
+           <%=form.time_field :designated_work_end_time,class:"form-control" %>
            
            <div style="text-align:center;">
                <%=form.submit yield(:button),class:"btn btn-primary btn-block" %>

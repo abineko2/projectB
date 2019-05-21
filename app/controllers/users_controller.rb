@@ -90,11 +90,11 @@ class UsersController < ApplicationController
   
 private
   def user_parameter   #form送信時parameter
-     params.require(:user).permit(:name,:email,:password,:password_confirmation,:belongs)  
+     params.require(:user).permit(:name,:email,:password,:password_confirmation,:affiliation)  
   end
   
   def basic_info_parameter
-    params.require(:user).permit(:basic_time,:appoint_time)
+    params.require(:user).permit(:basic_work_time,:designated_work_start_time)
   end
   
   def log_in_user  #ログインしてるかチェック

@@ -1,8 +1,0 @@
-class AddSuperiorTo < ActiveRecord::Migration[5.1]
-  def change
-    add_column :users,:superior,:boolean,default:false
-    add_column :users,:appoin_end_time,:datetime,default:Time.zone.parse("2019/05/01 08:00")
-    add_column :users,:employee_number,:integer
-    add_column :users,:uid,:string
-  end
-end

@@ -11,14 +11,14 @@
             <%=link_to "→",user_path(id:@user.id,params:{first_day:@first_day.next_month}),class:"btn btn-primary" %> 
         </td>
         <td>
-            <%="指定勤務時間   #{time_format(@user.appoint_time)}" %><br>
-            <%="指定勤務終了時間   #{time_format(@user.appoint_time)}" %><br>
+            <%="指定勤務時間   #{time_format(@user.designated_work_start_time)}" %><br>
+            <%="指定勤務終了時間   #{time_format(@user.designated_work_end_time)}" %><br>
         </td>
-        <td colspan="3"><%="基本時間   #{time_format(@user.basic_time)}" %></td>
+        <td colspan="3"><%="基本時間   #{time_format(@user. basic_work_time)}" %></td>
         <td colspan="3">初日&emsp;<%=@first_day.to_s(:date2) %></td>
     </tr>
     <tr>
-        <td>所属 : <%=@user.belongs.present? ? "#{@user.belongs}" : "無所属"  %></td>
+        <td>所属 : <%=@user.affiliation.present? ? "#{@user.belongs}" : "無所属"  %></td>
         <td><%="氏名 : #{@user.name}" %></td>
         <td>コード</td>
         <td></td>
@@ -133,7 +133,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan=""><%=time_format(@user.basic_time).to_f*@count %></td>
+                <td colspan=""><%=time_format(@user.basic_work_time).to_f*@count %></td>
                 <td colspan="2"></td>
                 <td colspan="6"></td>
                 <td><%= working_time_sum(@total) unless @total.nil? %></td>
