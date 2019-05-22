@@ -18,7 +18,7 @@
         <td colspan="3">初日&emsp;<%=@first_day.to_s(:date2) %></td>
     </tr>
     <tr>
-        <td>所属 : <%=@user.affiliation.present? ? "#{@user.belongs}" : "無所属"  %></td>
+        <td>所属 : <%=@user.affiliation.present? ? "#{@user.affiliation}" : "無所属"  %></td>
         <td><%="氏名 : #{@user.name}" %></td>
         <td>コード</td>
         <td></td>

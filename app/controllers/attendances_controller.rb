@@ -38,6 +38,19 @@ class AttendancesController < ApplicationController
             redirect_to edit_attendances_path(@user,params[:date])
         end        
     end
+    
+    def goToWork
+       @users=Array.new
+       users=User.all
+       users.each do |user|
+           attends=user.attendances.where("worked_on=?",Date.today) 
+           attends.each do |attendance|
+               if attendance.start_at.present? && attendance.finished_at.nil?
+                   @users << user
+               end       
+           end       
+       end       
+    end
 private
    def parameter
       params.permit(attendances:[:start_at,:finished_at,:note])[:attendances] 
