@@ -15,5 +15,6 @@ Rails.application.routes.draw do
    post 'usersearch',to:'users#index'
   resources :users do
     resources :attendances,only: :create
+    post :import,on: :collection
   end 
 end

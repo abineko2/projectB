@@ -15,6 +15,11 @@ class UsersController < ApplicationController
     end    
    
   end
+  def import
+    User.import(params[:file])
+    flash[:success] = "インポートできました"
+    redirect_to users_url
+  end
 
   def new      #新規登録ページ
     @user=User.new
