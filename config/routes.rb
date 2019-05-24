@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
-  get 'bases/index'
-
-  get 'bases/new'
-
-  get 'bases/edit'
+   resources :bases
 
   get 'login',to:'sessions#new'
   post 'login',to:'sessions#create'
@@ -20,8 +16,7 @@ Rails.application.routes.draw do
   get 'goToWork',to:'attendances#goToWork'
   get 'baseInfo',to: 'attendances#baseInfo'
   post 'baseInfo',to: 'attendances#basenew'
-  get 'bases',to:'bases#index'
-  post 'bases',to:'bases#index'
+ 
   
    get 'usersearch',to:'users#index'
    post 'usersearch',to:'users#index'

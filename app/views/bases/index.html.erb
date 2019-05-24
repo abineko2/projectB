@@ -1,100 +1,43 @@
-<div class="modals" id="modal01">
-    <div class="overLay modalClose"></div>
-    <div class="inner">
-        <a href="" class="modalClose" style="text-decoration:none"><h2>Ⓧ</h2></a>
-        <div id="modal-form" style="text-align:center">
-            <h2>拠点追加</h2><br>
-            <div class="row">
-                <div class="col-md-12">
-                    <%=form_for(@base,url:bases_path) do |f| %>
-                      <%=f.label "拠点追加" %>
-                      <%=f.text_field :basename,class:"form-control" %>
-                      
-                      <%=f.label "拠点番号" %>
-                      <%=f.number_field :baseno,class:"form-control" %>
-                      
-                       <%=f.label "勤怠種類" %>
-                      <%=f.text_field :attend,class:"form-control" %>
-                      
-                      <%=f.submit "追加",class:"btn btn-primary" %>
-                      
-                    <% end %>
-                </div>
-            </div>
-        </div>    
-    </div>
-</div>
-
 
 <div style="text-align:center">
     <h1>拠点一覧</h1><br>
     <%=provide(:title,"拠点情報修正") %>
     <table class="table table-bordered table-striped" id="baseInfo-table">
-        <tr>
+        <thead>
+            <tr>
             <th></th><th></th><th>拠点番号</th><th>拠点名</th><th>勤怠情報</th>
-        </tr>
+            </tr>
+        </thead>
+        <tbody class="product-index">
         <% @bases.each do |base| %>
               <tr>
-            <td style="text-align:left;margin:0;padding:0; padding-top:8px;"><%=link_to "修正","#",class:"btn btn-primary",id:"baseInfo_bt" %></td>
-            <td><%=link_to "削除","#",class:"btn btn-primary" %></td>
+            <td style="text-align:left;margin:0;padding:0; padding-top:8px;"> 
+            　　 <%=link_to "修正",edit_basis_path(base),class:"btn btn-primary",id:"baseInfo_bt" %>
+            </td>
+            <td><%=link_to "削除","/bases/#{base.id}",class:"btn btn-primary",method: :delete,data:{confirm:"削除しますか？"} %></td>
             <td><%=base.basename %></td>
             <td><%=base.baseno %></td>
             <td><%=base.attend %></td>
         </tr>
         <% end %>
-       
+       </tbody>
     </table>
     <div id="baseInfo-add">
-        <%=link_to "拠点情報追加","#modal01",class:"btn btn-primary modalOpen",id:"baseInfo_bt2" %>
+        <button class="btn btn-primary modalOpen" id="baseInfo_bt2">拠点情報追加</button>
+        <br>
+        <div id="base-form">
+            <%=render 'form' %>
+        </div>
     </div>
-</div>
+ </div>
+ <div id="product-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
 
 <style>
     body {
   position:relative;
 }
  
-/* モーダルウィンドウのスタイル */
-.modals {
-  position:absolute;
-  width:100%;
-  height:100vh;
-  top:0;
-  left:0;
-  display:none;
-}
- 
-/* オーバーレイのスタイル */
-.overLay {
-  position:absolute;
-  top:0;
-  left:0;
-  background:rgba(200,200,200,0.6);
-  width:100%;
-  height:100vh;
-  z-index:10;
-}
- 
-/* モーダルウィンドウの中身のスタイル */
-.modals .inner {
-  position:absolute;
-  z-index:11;
-  width: 30%;
-  height: 500px;  
-  padding: 200pxz;    
-  background-color: #fff;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-}
-@keyframes modals{
-  0% {top:-100%}
-  100% {top:50%}
-}
-@keyframes modalClose {
-  0% {top:50%}
-  100% {top:100%}
-}
+
     #baseInfo-table{
        width:70%;
        margin-left:15%;
@@ -109,11 +52,10 @@
         border-radius:6px;
         text-align:left;
    }
-   
-   
-    #baseInfo_bt{
+   #baseInfo_bt{
+       
         width:150px;
-        margin-left:4px;
+        padding:4px;
         
     }
     #baseInfo_bt2{
@@ -124,32 +66,15 @@
         padding-left:4px;
         
     }
+    #base-form{
+        display:none;
+        margin-top:20px;
+        text-align:center;
+    }
 </style>
 <script>
-    $(function(){
-    
-$(".modalOpen").click(function(){
-        
-    var navClass = $(this).attr("class");
-    href = $(this).attr("href");
-      
-    $(href).fadeIn();
-    $(this).addClass("open");
-    //cssアニメーションの記述を追加する
-    $(href).children(".inner").css("animation","modals 0.5s forwards");
-    return false;
+  $("#baseInfo_bt2").click(function(){
+        $("#base-form").slideToggle();
  
-});
-    
-$(".modalClose").click(function(){
-      
-      $(this).parents(".modals").fadeOut();  
-      $(".modalOpen").removeClass("open");
-     //cssアニメーションの記述を追加する
-      $(this).parents(".modal").children(".inner").css("animation","modalClose 0.5s forwards");
-      return false;
- 
-});  
-    
-});
+	});
 </script>
