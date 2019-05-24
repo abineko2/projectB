@@ -1,6 +1,8 @@
 class AttendancesController < ApplicationController
     before_action :page_block,only:[:edit,:update]
     before_action :startLogin
+    before_action :pages_block,only:[:goToWork]
+    
     def create       #出退勤時間表示
     
         @user=User.find(params[:user_id])
@@ -51,6 +53,9 @@ class AttendancesController < ApplicationController
            end       
        end       
     end
+    def baseInfo
+        
+    end
 private
    def parameter
       params.permit(attendances:[:start_at,:finished_at,:note])[:attendances] 
@@ -60,6 +65,14 @@ private
        if !current_user.admin?
            redirect_to root_url  unless current_user?(@user)
        end       
+   end
+   def pages_block
+       
+       if login?
+         if !current_user.admin? 
+           redirect_to root_url  
+         end     
+       end    
    end
     
 end

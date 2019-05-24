@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   patch 'users/:id/attendances/:date/update',to:'attendances#update',as: :update_attendances
   
   get 'goToWork',to:'attendances#goToWork'
+  get 'baseInfo',to: 'attendances#baseInfo'
   
    get 'usersearch',to:'users#index'
    post 'usersearch',to:'users#index'
