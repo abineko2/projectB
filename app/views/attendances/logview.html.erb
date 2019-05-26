@@ -7,7 +7,67 @@
     
     <%=form_for(@attendance,url:"#") do |f| %>
       <%=f.submit "リセット",class:"btn btn-default" %><br>
-      <%=f.select :note,[["年","年"]],{},class:"select1"%>
-      <div id="select1-lb">mmm</div>
+      <table>
+          <tr>
+              <td><%=f.select :note,[["年▼","年"],[1,1],[2,2]],{},class:"select1"%></td>
+              <td> <div id="selectlabe22">mmm</div></td>
+          </tr>
+           <tr>
+              <td><%=f.select :note,[["月▼","月"],[3,3],[4,4]],{},class:"select2"%></td>
+              <td><div id="selectlabe2">mmm</div></td>
+          </tr>
+      </table>
     <% end %>
+    <table class="table table-bordered table-condensed table-striped">
+        <thread>
+            <tr>
+                <th>日付</th><th>変更前出社時間</th><th>変更前退社社時間</th><th>変更後出社</th><th>変更後社</th><th>指示者</th><th>承認日</th>
+            </tr>
+        </thread>
+        <tbody>
+            
+        </tbody>
+    </table>
 </div>
+<style>
+    #log_form{
+      width:70%;
+      margin-left:15%;
+  }
+  select{border-radius:6px;appearance: none;-webkit-appearance: none;/* ベンダープレフィックス(Google Chrome、Safari用) */
+-moz-appearance: none;	/* ベンダープレフィックス(Firefox用) */padding:10px;}
+   #selectlabe22{
+          border-radius:6px;
+          background-color:#e0e0e0;
+          padding:10px;
+          padding-right:150px;
+      }
+  #selectlabe2{
+          border-radius:6px;
+          background-color:#e0e0e0;
+          padding:10px;
+          padding-right:150px;
+      }
+</style>
+<script>
+    $(function(){
+        $('.select1').change(function() {
+ 
+            //選択したvalue値を変数に格納
+            var val = $(this).val();
+         
+            //選択したvalue値をdiv要素に出力
+            $('#selectlabe22').text(val);
+            $(this).val("年");
+         });
+          $('.select2').change(function() {
+ 
+            //選択したvalue値を変数に格納
+            var val = $(this).val();
+         
+            //選択したvalue値をp要素に出力
+            $('#selectlabe2').text(val);
+            $(this).val("月");
+         });
+    });
+</script>
