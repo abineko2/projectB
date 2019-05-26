@@ -56,6 +56,9 @@ class AttendancesController < ApplicationController
     def baseInfo
         
     end
+    def logview
+        @attendance=Attendance.new
+    end
 private
    def parameter
       params.permit(attendances:[:start_at,:finished_at,:note])[:attendances] 

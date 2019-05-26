@@ -1,6 +1,6 @@
 @import 'bootstrap-sprockets';
 @import 'bootstrap';
-
+/***********/
 body{
     #container{
         margin-bottom:50px;
@@ -140,21 +140,19 @@ body{
        overflow:hidden;
    }
    /***********************************baseInfo*********************/
-  #baseInfo-table{
-       width:70%;
-       margin-left:15%;
-       margin-bottom:50px;
-       
-   }
-   #baseInfo-add{
-        width:70%;
-        height:80px;
-        background-color:#e0e0e0;
-        margin-left:15%;
-        border-radius:6px;
-        text-align:left;
-   }
-   
-
+  /*******************************勤怠ログ*******************************/
+  #log_form{
+      width:70%;
+      margin-left:15%;
+      #select1{
+          border-radius:6px;
+      }
+      #select1-lb{
+           border-radius:6px;
+           background-color:"#c0c0c0";
+           width:100px;
+           height:20px;
+      }
+  }
 }
  

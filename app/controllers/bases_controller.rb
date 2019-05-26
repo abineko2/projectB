@@ -1,4 +1,6 @@
 class BasesController < ApplicationController
+  before_action :pages_block
+  before_action :log_in_user
   def index
     @bases=Base.all
     @base=Base.new
@@ -45,5 +47,20 @@ class BasesController < ApplicationController
 private
   def base_parameter
     params.require(:base).permit(:basename,:baseno,:attend)
+  end
+  def pages_block
+       
+       if login?
+         if !current_user.admin? 
+           redirect_to root_url  
+         end     
+       end    
+  end
+  def log_in_user  #ログインしてるかチェック
+     unless login?
+       save_url 
+       flash[:dangert] = "ログインしてください"
+       redirect_to login_url
+     end  
   end
 end

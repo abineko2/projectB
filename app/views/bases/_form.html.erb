@@ -1,6 +1,15 @@
-           <div class="row">
+         
+           
+           <div class="modal-dialog">
+               <div class="modal-content">
+                   <div class="row">
                 <div class="col-md-12">
-                    <%=form_for(@base) do |f| %>
+                    <%=form_for(@base,remote:true) do |f| %>
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">拠点更新</h4>
                       <%=f.label "拠点追加" %>
                       <%=f.text_field :basename,class:"form-control",placeholder:"拠点名" %>
                       
@@ -10,8 +19,14 @@
                        <%=f.label "勤怠種類" %>
                       <%=f.text_field :attend,class:"form-control",placeholder:"勤怠種類" %><br>
                       
-                      <%=f.submit "追加",class:"btn btn-primary" %>
+                      <div style="text-align:center">
+                           <%=f.submit "更新",class:"btn btn-primary" %>
                       
+                      </div>
+                     
                     <% end %>
                 </div>
             </div>
+               </div>
+           </div>
+           

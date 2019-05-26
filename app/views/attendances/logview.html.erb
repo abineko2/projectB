@@ -1,0 +1,13 @@
+<div style="text-align:center;">
+    <h1>勤怠ログ</h1>
+    <%=provide(:title,"勤怠ログ") %>
+    
+</div>
+<div id="log_form">
+    
+    <%=form_for(@attendance,url:"#") do |f| %>
+      <%=f.submit "リセット",class:"btn btn-default" %><br>
+      <%=f.select :note,[["年","年"]],{},class:"select1"%>
+      <div id="select1-lb">mmm</div>
+    <% end %>
+</div>

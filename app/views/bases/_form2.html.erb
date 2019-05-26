@@ -1,0 +1,20 @@
+           
+                  <div class="row">
+                <div class="col-md-12">
+                    <%=form_for(@base) do |f| %>
+                      <%=f.label "拠点追加" %>
+                      <%=f.text_field :basename,class:"form-control",placeholder:"拠点名" %>
+                      
+                      <%=f.label "拠点番号" %>
+                      <%=f.number_field :baseno,class:"form-control",placeholder:"拠点番号" %>
+                      
+                       <%=f.label "勤怠種類" %>
+                      <%=f.text_field :attend,class:"form-control",placeholder:"勤怠種類" %><br>
+                      
+                      <%=f.submit "追加",class:"btn btn-primary" %>
+                      
+                    <% end %>
+                </div>
+            </div>
+             
+           
