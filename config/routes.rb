@@ -17,10 +17,12 @@ Rails.application.routes.draw do
   get 'goToWork',to:'attendances#goToWork'
   get 'baseInfo',to: 'attendances#baseInfo'
   post 'baseInfo',to: 'attendances#basenew'
- 
+  post 'sendcreate',to:'users#sendcreate'
   
    get 'usersearch',to:'users#index'
    post 'usersearch',to:'users#index'
+   
+   get 'box',to:'users#box'
   resources :users do
     resources :attendances,only: :create
     post :import,on: :collection

@@ -28,8 +28,14 @@
 </table>
 <% if @user.superior? %>
   <div id="admin_info">
-      <h2>[所属長承認申請のお知らせ]</h2>
-      <h2>[勤怠変更承認申請のお知らせ]</h2>
+      <% sends=Send.where(superior:@user.name) %>
+       <% count=sends.count %>
+       <% if count>0 %>
+             <h2 style="color:red;">[所属長承認申請のお知らせ]&emsp;&emsp;<%=link_to "#{count}件の通知があります",box_path,remote:true,id:"lb" %></h2>
+       <% else %>
+             <h2>[所属長承認申請のお知らせ]</h2>
+      <% end %>     
+    <h2>[勤怠変更承認申請のお知らせ]</h2>
       <h2>[残業申請のお知らせ]</h2>
   </div>
 <% end %>
@@ -136,14 +142,18 @@
                 <td colspan="5"></td>
                 <td>
                     所属長承認　&emsp;&emsp;未
-                    <form>
-                        <select class="form-control">
-                            <option value=""><%=@first_day.to_s(:date) %></option>
-                        </select><br>
-                        <input type="submit" value="申請" class="btn btn-primary">
-                    </form>
+                    <%=form_for(@send,url:sendcreate_path)  do |f| %>
+                       <%=f.select :superior,supeiors,{},class:"form-control" %>
+                       <%=f.hidden_field :month,value:@first_day %>
+                       <%=f.hidden_field :user,value:@user.name %>
+                       <%=f.submit "申請", class:"btn bt-sm btn-primary" %>
+                    <% end %>
                 </td>
             </tr>
         </tfoot>
     </table>
 </div>
+<div id="user-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+<style>
+    #lb{color:red;}
+</style>

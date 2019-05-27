@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  superior: MyString
+  month: 2019-05-27 14:29:27
+  user: MyString
+  conf: MyString
+
+two:
+  superior: MyString
+  month: 2019-05-27 14:29:27
+  user: MyString
+  conf: MyString

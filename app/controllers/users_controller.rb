@@ -77,6 +77,7 @@ class UsersController < ApplicationController
   
   def show  #勤怠ページ
     @user = User.find(params[:id])
+    @send=Send.new
     if params[:first_day].nil?
         @first_day=Date.today.beginning_of_month     
     else
@@ -99,11 +100,29 @@ class UsersController < ApplicationController
          send_data render_to_string, filename: "attendance-#{Time.zone.now.strftime('%Y%m%d%S')}.csv", type: :csv
       end
     end  
+    if @user.superior?
+       @sends=Send.all
+   
+    end  
+  end
+  def box
+     @sends=Send.all
+  end
+  def sendcreate
+    @send=Send.new(send_parameter)
+    if @send.save
+      redirect_to root_url
+    else  
+      render :show
+    end  
   end
   
 private
   def user_parameter   #form送信時parameter
      params.require(:user).permit(:name,:email,:password,:password_confirmation,:affiliation)  
+  end
+  def send_parameter
+    params.require(:send).permit(:superior,:month,:user,:conf)  
   end
   
   def basic_info_parameter
