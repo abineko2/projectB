@@ -91,6 +91,14 @@ class UsersController < ApplicationController
     end  
     @dates=setDate
     @count=@dates.where.not(start_at:nil).count
+    respond_to do |format|
+      format.html do
+         
+      end 
+      format.csv do
+         send_data render_to_string, filename: "attendance-#{Time.zone.now.strftime('%Y%m%d%S')}.csv", type: :csv
+      end
+    end  
   end
   
 private
