@@ -6,19 +6,60 @@
                       <span aria-hidden="true">&times;</span>
                     </button>
                     <div style="text-align:center">
+                        <% nameArray=Array.new %>
                         <% @sends.each do |send| %>
+                          
                           <% user=send.user %>
-                          <h2><%="[#{user}]からの1ヶ月分の勤怠申請]" %></h2>
-                         
-                              <table class="table table-bordered table-striped">
-                              <thead>
-                                  <tr>
-                                      <th>月</th><th>指示者確認㊞</th><th>変更</th><th>勤怠を確認する</th>
-                                  </tr>
-                              </thead>
-                          </table>
+                          <% nameArray << user %>
                           
                         <% end %>
+                          <% nameArray2=nameArray.uniq  %>
+                          <% nameArray2.each do |name| %>
+                             <h2><%="[#{name}]からの1ヶ月分の勤怠申請]" %></h2>
+                             <!--重複ユーザー-->
+                                  <% names=nameArray.group_by{|i| i}.reject{|k,v| v.size == 1}.keys %>
+                                  <% names.each do |name1| %>
+                                     <!--重複ユーザーかどうか-->
+                                     <% if name==name1 %>
+                                          <% @geoup=Send.where(user:name1) %>
+                                                   <table class="table table-bordered table-striped">
+                                                      <thead>
+                                                          <tr>
+                                                              <th>月</th><th>指示者確認㊞</th><th>変更</th><th>勤怠を確認する</th>
+                                                          </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                          <% @geoup.each do |group| %>
+                                                            <tr>
+                                                                 <td><%=group.month.to_s(:mt) %></td>
+                                                            </tr>
+                                                          <% end %>
+                                                      </tbody>
+                                                  </table>
+                                             
+                                       <% else %>  
+                                           <!--重複しないユーザー定義-->
+                                           <% us=Send.find_by(user:name) %>
+                                           <table class="table table-bordered table-striped">
+                                             <thead>
+                                                 <tr>
+                                                    <th>月</th><th>指示者確認㊞</th><th>変更</th><th>勤怠を確認する</th>
+                                                 </tr>
+                                            </thead>
+                                            <tbody>
+                                               <tr>
+                                                  <td><%=us.month.to_s(:mt) %></td>             
+                                               </tr>
+                                            </tbody>
+                                         </table>
+                                       <% end %>
+                                   <% end %>
+                          <% end %>
+                          
+                          
+                           
+                          
+                          
                     </div>
                 </div>
                       <div class="modal-body">
