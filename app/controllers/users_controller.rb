@@ -106,7 +106,13 @@ class UsersController < ApplicationController
     end  
   end
   def box
+    @user=User.find(params[:id])
      @sends=Send.all
+     array=[]
+     @sends.each do |send|
+       array << send.user.name
+     end   
+     @nameArray=array.uniq
   end
   def sendcreate
     @send=Send.new(send_parameter)
@@ -122,7 +128,7 @@ private
      params.require(:user).permit(:name,:email,:password,:password_confirmation,:affiliation)  
   end
   def send_parameter
-    params.require(:send).permit(:superior,:month,:user,:conf)  
+    params.require(:send).permit(:superior,:month,:user_id,:conf)  
   end
   
   def basic_info_parameter
@@ -139,7 +145,7 @@ private
   
   def current_user_check  #ログインユーザーによるアクセスかチェック
      @user=User.find params[:id]
-    redirect_to login_url unless current_user?(@user)
+    redirect_to login_url unless current_user?(@user) 
   end
   
   def find_user
@@ -151,10 +157,11 @@ private
       redirect_to root_path 
     end
   end
+  
   def page_block
        @user=User.find(params[:id])
        if login?
-         if !current_user.admin? 
+         if !current_user.admin? && !current_user.superior?
            redirect_to root_url  unless current_user?(@user)
          end     
        end    

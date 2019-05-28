@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190527142927) do
+ActiveRecord::Schema.define(version: 20190528114458) do
 
   create_table "attendances", force: :cascade do |t|
     t.date "worked_on"
@@ -34,10 +34,11 @@ ActiveRecord::Schema.define(version: 20190527142927) do
   create_table "sends", force: :cascade do |t|
     t.string "superior"
     t.datetime "month"
-    t.string "user"
-    t.string "conf"
+    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "conf"
+    t.index ["user_id"], name: "index_sends_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

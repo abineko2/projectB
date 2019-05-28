@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  patch 'sends/update',to:'sends#update'
+
    resources :bases
 
   get 'login',to:'sessions#new'
@@ -22,7 +24,7 @@ Rails.application.routes.draw do
    get 'usersearch',to:'users#index'
    post 'usersearch',to:'users#index'
    
-   get 'box',to:'users#box'
+   get 'box/:id',to:'users#box',as: :box
   resources :users do
     resources :attendances,only: :create
     post :import,on: :collection

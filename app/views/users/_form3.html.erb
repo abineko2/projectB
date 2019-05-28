@@ -1,72 +1,51 @@
          
-           <div class="modal-dialog">
+           <div class="modal-dialog modal-lg">
                <div class="modal-content">
                  <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
-                    <div style="text-align:center">
-                        <% nameArray=Array.new %>
-                        <% @sends.each do |send| %>
-                          
-                          <% user=send.user %>
-                          <% nameArray << user %>
-                          
-                        <% end %>
-                          <% nameArray2=nameArray.uniq  %>
-                          <% nameArray2.each do |name| %>
-                             <h2><%="[#{name}]からの1ヶ月分の勤怠申請]" %></h2>
-                             <!--重複ユーザー-->
-                                  <% names=nameArray.group_by{|i| i}.reject{|k,v| v.size == 1}.keys %>
-                                  <% names.each do |name1| %>
-                                     <!--重複ユーザーかどうか-->
-                                     <% if name==name1 %>
-                                          <% @geoup=Send.where(user:name1) %>
-                                                   <table class="table table-bordered table-striped">
-                                                      <thead>
-                                                          <tr>
-                                                              <th>月</th><th>指示者確認㊞</th><th>変更</th><th>勤怠を確認する</th>
-                                                          </tr>
-                                                      </thead>
-                                                      <tbody>
-                                                          <% @geoup.each do |group| %>
-                                                            <tr>
-                                                                 <td><%=group.month.to_s(:mt) %></td>
-                                                            </tr>
-                                                          <% end %>
-                                                      </tbody>
-                                                  </table>
-                                             
-                                       <% else %>  
-                                           <!--重複しないユーザー定義-->
-                                           <% us=Send.find_by(user:name) %>
-                                           <table class="table table-bordered table-striped">
-                                             <thead>
-                                                 <tr>
-                                                    <th>月</th><th>指示者確認㊞</th><th>変更</th><th>勤怠を確認する</th>
-                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                               <tr>
-                                                  <td><%=us.month.to_s(:mt) %></td>             
-                                               </tr>
-                                            </tbody>
-                                         </table>
-                                       <% end %>
-                                   <% end %>
-                          <% end %>
-                          
-                          
-                           
-                          
-                          
-                    </div>
+                   
                 </div>
                       <div class="modal-body">
+                      <%=form_for(@user,url:sends_update_path,method: :patch) do |f| %>      
                             <div class="field">
-                              
-                            </div>
-                      </div>
+                                 <div style="text-align:center">
+                        <% @nameArray.each do |name| %>
+                          <h3><%="[#{name}から一ヶ月勤怠申請]" %></h3>
+                          <% us=User.find_by(name: name) %>
+                          <% sends=Send.where(user_id: us.id) %>
+                          <table class="table table-bordered table-condensed table-striped">
+                              <thead>
+                                  <tr>
+                                      <th>月</th>
+                                      <th>指示者確認㊞</th>
+                                      <th>変更</th>
+                                      <th>勤怠を確認する</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <% sends.each do |send| %>
+                                  <%=fields_for "sends[]",send do |af| %>
+                                    <tr>
+                                        <td><%=send.month.to_s(:mt) %></td>
+                                        <td><%=af.text_field :conf %></td>
+                                        <td></td>
+                                        <td><%=link_to "確認",user_path(send.user.id,params:{first_day:send.month}),class:"btn btn-primary" %></td>
+                                    </tr>
+                                   <% end %>   
+                                  <% end %>
+                              </tbody>
+                          </table>
+                        <% end %>
+                    </div>
+                    <div style="text-align:center">
+                        <%=f.submit "送信",class:"btn btn-primary" %>
+                    </div>
+                    <% end %>
+                </div>
+                
+             </div>
                </div>
            </div>
            

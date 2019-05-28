@@ -1,5 +1,6 @@
 class User < ApplicationRecord
     has_many:attendances,dependent: :destroy
+    has_many:sends,dependent: :destroy
     has_secure_password
     validates :name,presence:true,length:{maximum:30}
     EMAIL= /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i

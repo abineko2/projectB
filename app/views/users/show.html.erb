@@ -145,7 +145,7 @@
                     <%=form_for(@send,url:sendcreate_path)  do |f| %>
                        <%=f.select :superior,supeiors,{},class:"form-control" %>
                        <%=f.hidden_field :month,value:@first_day %>
-                       <%=f.hidden_field :user,value:@user.name %>
+                       <%=f.hidden_field :user_id,value:@user.id %>
                        <%=f.submit "申請", class:"btn bt-sm btn-primary" %>
                     <% end %>
                 </td>

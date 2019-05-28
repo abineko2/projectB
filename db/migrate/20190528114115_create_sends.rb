@@ -3,8 +3,7 @@ class CreateSends < ActiveRecord::Migration[5.1]
     create_table :sends do |t|
       t.string :superior
       t.datetime :month
-      t.string :user
-      t.string :conf
+      t.references :user, foreign_key: true
 
       t.timestamps
     end
