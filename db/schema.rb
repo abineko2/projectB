@@ -33,11 +33,13 @@ ActiveRecord::Schema.define(version: 20190528114458) do
 
   create_table "sends", force: :cascade do |t|
     t.string "superior"
-    t.datetime "month"
+    t.string "month"
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "conf"
+    t.datetime "tm"
+    t.boolean "box"
     t.index ["user_id"], name: "index_sends_on_user_id"
   end
 

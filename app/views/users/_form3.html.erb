@@ -8,6 +8,7 @@
                    
                 </div>
                       <div class="modal-body">
+                            
                       <%=form_for(@user,url:sends_update_path,method: :patch) do |f| %>      
                             <div class="field">
                                  <div style="text-align:center">
@@ -28,10 +29,10 @@
                                   <% sends.each do |send| %>
                                   <%=fields_for "sends[]",send do |af| %>
                                     <tr>
-                                        <td><%=send.month.to_s(:mt) %></td>
-                                        <td><%=af.text_field :conf %></td>
-                                        <td></td>
-                                        <td><%=link_to "確認",user_path(send.user.id,params:{first_day:send.month}),class:"btn btn-primary" %></td>
+                                        <td><%=send.month %></td>
+                                        <td><%=af.select :conf,list_answer,{},class:"form-control" %></td>
+                                        <td><%=af.check_box 'box', {:checked => true} %></td>
+                                        <td><%=link_to "確認",user_path(send.user.id,params:{first_day: send.tm}),class:"btn btn-primary" %></td>
                                     </tr>
                                    <% end %>   
                                   <% end %>

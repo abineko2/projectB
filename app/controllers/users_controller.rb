@@ -107,7 +107,7 @@ class UsersController < ApplicationController
   end
   def box
     @user=User.find(params[:id])
-     @sends=Send.all
+     @sends=Send.where(superior:current_user.name)
      array=[]
      @sends.each do |send|
        array << send.user.name
@@ -128,7 +128,7 @@ private
      params.require(:user).permit(:name,:email,:password,:password_confirmation,:affiliation)  
   end
   def send_parameter
-    params.require(:send).permit(:superior,:month,:user_id,:conf)  
+    params.require(:send).permit(:superior,:month,:user_id,:conf,:tm)  
   end
   
   def basic_info_parameter

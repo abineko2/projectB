@@ -9,5 +9,8 @@ module UsersHelper
             @sp_list << member.name
         end    
         return @sp_list
-    end        
+    end 
+    def list_answer
+        @ans_list=["申請中","承認","否認","なし"]
+    end
 end

@@ -1,11 +1,19 @@
 class SendsController < ApplicationController
   
   def update
-  
+    
+     send_parameter.each do |id,item|
+      if item[:box]
+         send=Send.find(id)
+         send.update_attributes(item)
+      end
+     end   
+     
+    redirect_to root_url
   end
   
   private
     def send_parameter
-       params.permit(sends:[:conf])[:sends]
+       params.permit(sends:[:conf,:box])[:sends]
     end
 end
