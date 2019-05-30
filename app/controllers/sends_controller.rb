@@ -3,7 +3,7 @@ class SendsController < ApplicationController
   def update
     
      send_parameter.each do |id,item|
-      if item[:box]
+      if item[:box].to_i==1
          send=Send.find(id)
          send.update_attributes(item)
       end
