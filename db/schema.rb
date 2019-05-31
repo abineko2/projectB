@@ -10,12 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190528114458) do
+ActiveRecord::Schema.define(version: 20190530131137) do
 
   create_table "attendances", force: :cascade do |t|
+    t.string "sperior"
     t.date "worked_on"
     t.datetime "start_at"
     t.datetime "finished_at"
+    t.datetime "new_start"
+    t.datetime "new_finish"
+    t.boolean "box"
     t.string "note"
     t.integer "user_id"
     t.datetime "created_at", null: false
@@ -29,6 +33,22 @@ ActiveRecord::Schema.define(version: 20190528114458) do
     t.string "attend"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "send2s", force: :cascade do |t|
+    t.string "sperior"
+    t.date "worked_on"
+    t.datetime "start_at"
+    t.datetime "finished_at"
+    t.datetime "new_start"
+    t.datetime "new_finish"
+    t.boolean "box"
+    t.string "note"
+    t.string "answer"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_send2s_on_user_id"
   end
 
   create_table "sends", force: :cascade do |t|

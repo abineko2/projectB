@@ -3,16 +3,19 @@
 <div style="text-align:center;padding-bottom:10px;">
     <h1>勤怠編集</h1>
 </div>
+<div id="user-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
 <%=form_for(@user,url:update_attendances_path,method: :patch) do |f| %>
 <table class="table table-bordered table-condensed table-striped ">
         <thead>
             <tr>
                 <th rowspan="2">日付</th>
                 <th rowspan="2">曜日</th>
-                <th rowspan="2">出勤時間</th>
-                <th rowspan="2">退勤時間</th>
+                <th rowspan="2">出社</th>
+                <th rowspan="2">退社</th>
+                <th rowspan="2">翌日</th>
                 <th rowspan="2">在社時間</th>
                 <th rowspan="2">備考</th>
+                <th rowspan="2">指示者確認</th>
             </tr>
         </thead>
         <tbody>
@@ -21,14 +24,20 @@
               <tr>
                   <td><%=day.worked_on.to_s(:date) %></td>
                   <td><%=%w(日 月 火 水 木 金 土)[day.worked_on.wday] %></td>
-                  <td><%=af.time_field :start_at,class:"form-control" %></td>
-                  <td><%=af.time_field :finished_at,class:"form-control" %></td>
+                  <%=af.hidden_field :worked_on,value:day.worked_on %>
+                  <%=af.hidden_field :start_at,value:day.start_at %>
+                  <%=af.hidden_field :finished_at,value:day.finished_at %>
+                  <td><%=af.time_field :new_start,class:"form-control" %></td>
+                  <td><%=af.time_field :new_finish,class:"form-control" %></td>
+                  <td><%=af.check_box :box,{:checked=>false} %></td>
+                  <%=af.hidden_field :user_id,value:@user.id %>
                   <td>
                       <% if day.start_at.present? && day.finished_at.present? %>
                         <%=working_time(day.finished_at,day.start_at) %>
                       <% end %>
                   </td>
                   <td><%=af.text_field :note %></td>
+                  <td><%=af.select :sperior,supeiors,{},class:"form-control" %></td>
               </tr>
               <% end %>
             <% end %>

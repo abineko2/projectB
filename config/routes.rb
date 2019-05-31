@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
+
   patch 'sends/update',to:'sends#update'
 
    resources :bases
+   resources :send2s
 
   get 'login',to:'sessions#new'
   post 'login',to:'sessions#create'
@@ -15,6 +17,7 @@ Rails.application.routes.draw do
   get 'users/:id/attendances/:date/edit',to:'attendances#edit',as: :edit_attendances
   patch 'users/:id/attendances/:date/update',to:'attendances#update',as: :update_attendances
   get 'logview',to:'attendances#logview'
+  get 'user/attendance/box/:id',to:'attendances#box',as: :user_attendance_box
   
   get 'goToWork',to:'attendances#goToWork'
   get 'baseInfo',to: 'attendances#baseInfo'

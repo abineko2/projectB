@@ -29,13 +29,21 @@
 <% if @user.superior?%>
   <div id="admin_info">
       <% sends=Send.where(superior:@user.name) %>
+      <%=attendances=Attendance.where(sperior:@user.name).count %>
        <% count=sends.count %>
+     
+       
        <% if count>0  && current_user.superior? %>
              <h2 style="color:red;">[所属長承認申請のお知らせ]&emsp;&emsp;<%=link_to "#{count}件の通知があります",box_path,remote:true,id:"lb" %></h2>
        <% else %>
              <h2>[所属長承認申請のお知らせ]</h2>
       <% end %>     
-    <h2>[勤怠変更承認申請のお知らせ]</h2>
+      <% if attendances>0  && current_user.superior? %>
+             <h2 style="color:red;">[勤怠変更承認申請のお知らせ]&emsp;&emsp;<%=link_to "#{attendances}件の通知があります",user_attendance_box_path,remote:true,id:"lb" %></h2>
+       <% else %>
+            <h2>[勤怠変更承認申請のお知らせ]</h2>
+      <% end %>     
+    
       <h2>[残業申請のお知らせ]</h2>
   </div>
 <% end %>

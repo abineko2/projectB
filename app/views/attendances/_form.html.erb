@@ -1,0 +1,73 @@
+
+
+<div class="modal-dialog">
+    <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+                   
+        </div>
+         <div class="modal-body">
+             <div style="text-align:center">
+                  <% @names.each do |a| %>
+                  <% user=User.find_by(name:a) %>
+                  <% att=user.attendances.where(user_id:user.id,sperior:@user.name) %>
+                 
+                    <h3><%="[#{a}からの勤怠変更申請]" %></h3>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th rowspan="3">日付</th>
+                                <th rowspan="3">曜日</th>
+                                <th colspan="4">変更前</th>
+                                <th colspan="4">変更後</th>
+                                <th rowspan="3">備考</th>
+                                <th rowspan="3">指示者確認㊞</th>
+                                <th rowspan="3">変更</th>
+                                <th rowspan="3">勤怠を確認する</th>
+                            </tr>
+                            <tr>
+                                <th colspan="2">出社</th>
+                                <th colspan="2">退社</th>
+                                <th colspan="2">出社</th>
+                                <th colspan="2">退社</th>
+                            </tr>
+                            <tr>
+                                <th>時</th>
+                                <th>分</th>
+                                <th>時</th>
+                                <th>分</th>
+                                
+                                <th>時</th>
+                                <th>分</th>
+                                <th>時</th>
+                                <th>分</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% att.each do |at| %>
+                              <tr>
+                                  <td><%=at.worked_on.to_s(:date)  %></td>
+                                  <td><%=%w{日 月 火 水 木 金 土}[at.worked_on.wday] %></td>
+                                  <td><%=at.start_at.to_s(:hour) if at.start_at.present?  %></td>
+                                  <td><%=at.start_at.to_s(:min) if at.start_at.present?  %></td>
+                                  <td><%=at.finished_at.to_s(:hour) if at.finished_at.present?  %></td>
+                                  <td><%=at.finished_at.to_s(:min) if at.finished_at.present?  %></td>
+                                  <td><%=at.new_start.to_s(:hour) if at.new_start.present?  %></td>
+                                  <td><%=at.new_start.to_s(:min) if at.new_start.present?  %></td>
+                                  <td><%=at.new_finish.to_s(:hour) if at.new_finish.present?  %></td>
+                                  <td><%=at.new_finish.to_s(:min) if at.new_finish.present?  %></td>
+                                  <td><%=at.note %></td>
+                                  <td></td>
+                                  <td></td>
+                              </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
+                  <% end %>
+             </div>
+         </div>
+        <p>test</p>
+    </div>
+</div>

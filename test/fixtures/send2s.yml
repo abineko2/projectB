@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  spsuperior: MyString
+  worked_on: 2019-05-30
+  start: 2019-05-30 13:11:37
+  finish: 2019-05-30 13:11:37
+  new_start: 2019-05-30 13:11:37
+  new_finish: 2019-05-30 13:11:37
+  note: MyString
+  answer: MyString
+  user: one
+
+two:
+  spsuperior: MyString
+  worked_on: 2019-05-30
+  start: 2019-05-30 13:11:37
+  finish: 2019-05-30 13:11:37
+  new_start: 2019-05-30 13:11:37
+  new_finish: 2019-05-30 13:11:37
+  note: MyString
+  answer: MyString
+  user: two

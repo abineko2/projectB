@@ -27,7 +27,9 @@ class AttendancesController < ApplicationController
         @dates=setDate
     end
     def update
+        
         @user=User.find(params[:id])
+        
         if attendances_invalid?
             parameter.each do |id,item|
                 attendance=Attendance.find(id)
@@ -59,9 +61,20 @@ class AttendancesController < ApplicationController
     def logview
         @attendance=Attendance.new
     end
+    
+    def box
+        names=[]
+        @user=User.find(params[:id])
+        @attendances=Attendance.where(sperior:@user.name)
+        @attendances.each do |att|
+            names << att.user.name
+        end            
+        @names=names.uniq
+        
+    end
 private
    def parameter
-      params.permit(attendances:[:start_at,:finished_at,:note])[:attendances] 
+      params.permit(attendances:[:worked_on,:start_at,:finished_at,:new_start,:new_finish,:box,:note,:sperior])[:attendances] 
    end
    def page_block
        @user=User.find(params[:id])
@@ -77,5 +90,6 @@ private
          end     
        end    
    end
+ 
     
 end

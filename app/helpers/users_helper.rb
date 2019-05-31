@@ -5,6 +5,7 @@ module UsersHelper
     def supeiors
         @sp_list=Array.new
         members=User.where(superior:true)
+        @sp_list << ""
         members.each do |member|
             @sp_list << member.name
         end    
