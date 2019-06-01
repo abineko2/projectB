@@ -41,6 +41,29 @@ module AttendancesHelper
         end
         return attend
     end
+    def attendances2_invalid?
+        attend=true
+        parameter.each do |id,item|
+            attendance=Attendance.find(id)
+            day=Date.today
+            
+            if item[:new_start].blank? && item[:new_finish].blank?
+                next
+            elsif item[:new_start].blank? || item[:new_finish].blank?
+               attend=false
+               break
+            elsif item[:new_start] > item[:new_finish]
+                attend=false
+                break
+            elsif attendance.worked_on>day
+                 attend=false
+                break        
+            end
+            
+            
+        end
+        return attend
+    end
     def timeChange(min)
         
         num=min.to_i/15

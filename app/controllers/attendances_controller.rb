@@ -30,7 +30,7 @@ class AttendancesController < ApplicationController
         
         @user=User.find(params[:id])
         
-        if attendances_invalid?
+        if attendances2_invalid?
             parameter.each do |id,item|
                 attendance=Attendance.find(id)
                 attendance.update_attributes(item)
@@ -71,10 +71,25 @@ class AttendancesController < ApplicationController
         end            
         @names=names.uniq
         
-    end
+    end              #勤怠申請確認
+    def confirmation
+         if attendances2_invalid?
+            parameter.each do |id,item|
+               if item[:box].to_i==1
+                attendance=Attendance.find(id)
+                attendance.update_attributes(item)
+               end    
+            end
+            flash[:success]="編集しました"
+            redirect_to root_url
+         else
+            flash[:danger]="編集失敗しました"
+            redirect_to edit_attendances_path(@user,params[:date])
+         end        
+    end   
 private
    def parameter
-      params.permit(attendances:[:worked_on,:start_at,:finished_at,:new_start,:new_finish,:box,:note,:sperior])[:attendances] 
+      params.permit(attendances:[:first_day,:worked_on,:start_at,:finished_at,:new_start,:new_finish,:box,:note,:sperior,:result])[:attendances] 
    end
    def page_block
        @user=User.find(params[:id])

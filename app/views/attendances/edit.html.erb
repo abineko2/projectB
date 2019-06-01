@@ -25,6 +25,7 @@
                   <td><%=day.worked_on.to_s(:date) %></td>
                   <td><%=%w(日 月 火 水 木 金 土)[day.worked_on.wday] %></td>
                   <%=af.hidden_field :worked_on,value:day.worked_on %>
+                  <%=af.hidden_field :first_day,value:@first_day %>
                   <%=af.hidden_field :start_at,value:day.start_at %>
                   <%=af.hidden_field :finished_at,value:day.finished_at %>
                   <td><%=af.time_field :new_start,class:"form-control" %></td>

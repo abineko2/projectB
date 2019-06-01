@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   patch 'users/:id/attendances/:date/update',to:'attendances#update',as: :update_attendances
   get 'logview',to:'attendances#logview'
   get 'user/attendance/box/:id',to:'attendances#box',as: :user_attendance_box
+  patch 'user/attendances/confirmation',to:'attendances#confirmation',as: :attendances_confirmation
   
   get 'goToWork',to:'attendances#goToWork'
   get 'baseInfo',to: 'attendances#baseInfo'

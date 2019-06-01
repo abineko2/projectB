@@ -137,7 +137,14 @@
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td></td>
+                  <% if day.result=="承認" %>
+                    <td>勤怠変更承認済み</td>
+                  <% elsif day.result=="否認" %>
+                  　<td>勤怠変更否認</td>
+                  <% else %>
+                     <td></td>
+                  <% end %>
+                 
               </tr>
             <% end %>
         </tbody>

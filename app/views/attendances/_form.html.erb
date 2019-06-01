@@ -1,6 +1,6 @@
 
 
-<div class="modal-dialog">
+<div class="modal-dialog modal-lg">
     <div class="modal-content">
          <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -9,12 +9,14 @@
                    
         </div>
          <div class="modal-body">
+             <%=form_for(@user,url:attendances_confirmation_path,method: :patch) do |f| %>
              <div style="text-align:center">
                   <% @names.each do |a| %>
                   <% user=User.find_by(name:a) %>
                   <% att=user.attendances.where(user_id:user.id,sperior:@user.name) %>
                  
                     <h3><%="[#{a}からの勤怠変更申請]" %></h3>
+                   
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -47,6 +49,7 @@
                         </thead>
                         <tbody>
                             <% att.each do |at| %>
+                              <%=fields_for "attendances[]",at do |af| %>
                               <tr>
                                   <td><%=at.worked_on.to_s(:date)  %></td>
                                   <td><%=%w{日 月 火 水 木 金 土}[at.worked_on.wday] %></td>
@@ -59,15 +62,23 @@
                                   <td><%=at.new_finish.to_s(:hour) if at.new_finish.present?  %></td>
                                   <td><%=at.new_finish.to_s(:min) if at.new_finish.present?  %></td>
                                   <td><%=at.note %></td>
-                                  <td></td>
-                                  <td></td>
+                                  <td><%=af.select :result,list_answer,{},class:"form-control" %></td>
+                                  <td><%=af.check_box :box,{:checked=>false} %></td>
+                                  <td><%=link_to "確認",user_path(at.user,params:{first_day:at.first_day}),class:"btn btn-primary" %></td>
                               </tr>
+                              <% end %>
                             <% end %>
                         </tbody>
                     </table>
+                    
                   <% end %>
              </div>
+             <div style="text-align:center">
+             <%=f.submit "変更",class:"btn btn-primary" %>
+        </div> 
+       <!--form finish-->
+       <%end %>
          </div>
-        <p>test</p>
+        
     </div>
 </div>
