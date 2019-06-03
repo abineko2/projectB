@@ -30,6 +30,7 @@
   <div id="admin_info">
       <% sends=Send.where(superior:@user.name) %>
       <%=attendances=Attendance.where(sperior:@user.name).count %>
+      <%=over_times=Send2.where(sperior:@user.name).count %>
        <% count=sends.count %>
      
        
@@ -43,8 +44,13 @@
        <% else %>
             <h2>[勤怠変更承認申請のお知らせ]</h2>
       <% end %>     
+       <% if over_times>0  && current_user.superior? %>
+             <h2 style="color:red;">[残業申請のお知らせ]&emsp;&emsp;<%=link_to "#{over_times}件の通知があります",over_time_box3_path,remote:true,id:"lb" %></h2>
+       <% else %>
+            <h2>[残業申請のお知らせ]</h2>
+      <% end %>     
     
-      <h2>[残業申請のお知らせ]</h2>
+     
   </div>
 <% end %>
 <div>
@@ -95,7 +101,7 @@
         <tbody>
             <% @dates.each do |day| %>
               <tr>
-                  <td><%=button_to "残業申請","#",class:"btn btn-primary" %></td>
+                  <td><%=link_to "残業申請",over_time_path(@user.id,day.worked_on),remote:true,class:"btn btn-primary" %></td>
                   <td><%=day.worked_on.to_s(:date) %></td>
                       <% week=%w(日 月 火 水 木 金 土)[day.worked_on.wday] %>
                       <% if week["土"] %>
@@ -133,10 +139,14 @@
                       <% end %>
                   </td>
                   <td><%=day.note %></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <!--残業関連処理---->
+                  <% time= day.worked_on.to_s(:date) %>
+                  <% send=@user.send2s.find_by(time:time) %>
+                      <td><%=send.new_finish.to_s(:hour) if send.present? && send.answer=="承認" %></td>
+                      <td><%=send.new_finish.to_s(:min) if send.present? &&send.answer=="承認" %></td>
+                      <td><%=send.overtime if send.present? if send.present? &&send.answer=="承認" %></td>
+                      <td><%=send.note if send.present? &&send.answer=="承認" %></td>
+                  <!--/残業処理-->    
                   <% if day.result=="承認" %>
                     <td>勤怠変更承認済み</td>
                   <% elsif day.result=="否認" %>

@@ -3,7 +3,6 @@ Rails.application.routes.draw do
   patch 'sends/update',to:'sends#update'
 
    resources :bases
-   resources :send2s
 
   get 'login',to:'sessions#new'
   post 'login',to:'sessions#create'
@@ -18,7 +17,11 @@ Rails.application.routes.draw do
   patch 'users/:id/attendances/:date/update',to:'attendances#update',as: :update_attendances
   get 'logview',to:'attendances#logview'
   get 'user/attendance/box/:id',to:'attendances#box',as: :user_attendance_box
-  patch 'user/attendances/confirmation',to:'attendances#confirmation',as: :attendances_confirmation
+  get 'users/:id/box2/:date',to:'users#box2',as: :over_time
+  patch 'user/attendances/confirmation/',to:'attendances#confirmation',as: :attendances_confirmation
+  post 'over_time_new/:id',to:'send2s#content',as: :over_time_new
+  get 'over_time_box3/:id',to:'send2s#box3',as: :over_time_box3
+  patch 'over_time_update/:id',to:'send2s#update',as: :over_time_update
   
   get 'goToWork',to:'attendances#goToWork'
   get 'baseInfo',to: 'attendances#baseInfo'

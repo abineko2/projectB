@@ -114,6 +114,16 @@ class UsersController < ApplicationController
      end   
      @nameArray=array.uniq
   end
+  
+  def box2
+    @send2=Send2.new
+    @worked_on=params[:date]
+    @date=params[:date].to_date.to_s(:date)
+    @day=%w(日 月 火 水 木 金 土)[params[:date].to_date.wday]
+    @user=User.find(params[:id])
+  end
+  
+  
   def sendcreate
     @send=Send.new(send_parameter)
     if @send.save

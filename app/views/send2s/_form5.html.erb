@@ -1,0 +1,59 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+         <div class="modal-body">
+            <div style="text-align:center">
+                <%=form_for(@user,url:over_time_update_path,method: :patch) do |f| %>
+                <% @names.each do |name| %>
+                 <% user=User.find_by(name: name) %>
+                 <% sends=user.send2s.where(sperior:@user.name) %>
+                  <h3><%="[#{name}からの残業申請]" %></h3>
+                  <table class="table table-bordered table-condensed table-striped">
+                      <thead>
+                          <tr>
+                              <th>日付</th>
+                              <th>曜日</th>
+                              <th>終了予定時間</th>
+                              <th>指定勤務終了時間</th>
+                              <th>時間外時間</th>
+                              <th>業務処理内容</th>
+                              <th>指示者確認㊞</th>
+                              <th>変更</th>
+                              <th>勤怠を確認する</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                         <% sends.each do |send| %>
+                          <%=fields_for "send2s[]",send do |af| %>
+                          <tr>
+                                <td><%=send.worked_on.to_s(:date) %></td>
+                                <td><%=%w(日 月 火 水 木 金 土)[send.worked_on.wday] %></td>
+                                <td><%=send.new_finish.to_s(:time) %></td>
+                                <td><%=user.designated_work_end_time.to_s(:time) %></td>
+                                <td><%=tim=over_calc(send.new_finish,user.designated_work_end_time) %></td>
+                                <td><%=send.note %></td>
+                                <td><%=af.select :answer, list_answer,{},class:"form-control" %></td>
+                                <td><%=af.check_box :box,{:checked=>false} %></td>
+                                <td><%=link_to "確認",user_path(user,params:{first_day:send.worked_on}),class:"btn btn-primary" %></td>
+                                <%=af.hidden_field :overtime,value:tim %>
+                          </tr>
+                         <% end %>
+                         <% end %>
+                      </tbody>
+                  </table>
+                <% end %>
+                <div style="text-align:center">
+                    <%=f.submit "変更を送信する",class:"btn btn-primary" %>
+                </div>
+                <% end %>
+            </div>
+        
+           
+         </div>
+     
+    </div>
+</div>
