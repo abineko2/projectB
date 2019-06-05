@@ -24,7 +24,9 @@ class Send2sController < ApplicationController  #残業申請アクション
     @user=User.find(params[:id])
     @send2s=Send2.where(sperior:@user.name)
     @send2s.each do |send|
+      if send.answer=="申請中" || send.answer=="なし" || send.answer==nil
        list << send.user.name
+      end 
     end 
     @names=list.uniq
     p list
@@ -43,12 +45,12 @@ class Send2sController < ApplicationController  #残業申請アクション
     parameter.each do |id,item|
        if item[:box].to_i==1
           send=Send2.find(id)
+          send.update_attributes(item)
           if send.answer=="承認" || send.answer=="否認"
             num-=1
             @notice.over_time_num=num
             @notice.save
           end  
-          send.update_attributes(item)
        end    
     end  
     redirect_to root_url

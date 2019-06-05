@@ -27,6 +27,8 @@
                               </thead>
                               <tbody>
                                   <% sends.each do |send| %>
+                                   <!--承認、否認以外data表示-->
+                                   <% if !(send.conf=="承認" || send.conf=="否認") %>
                                   <%=fields_for "sends[]",send do |af| %>
                                     <tr>
                                         <td><%=send.month %></td>
@@ -34,6 +36,7 @@
                                         <td><%=af.check_box :box, {:checked => true} %></td>
                                         <td><%=link_to "確認",user_path(send.user.id,params:{first_day: send.tm}),class:"btn btn-primary" %></td>
                                     </tr>
+                                   <% end %>    
                                    <% end %>   
                                   <% end %>
                               </tbody>
