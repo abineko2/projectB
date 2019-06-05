@@ -14,9 +14,12 @@
                   <% @names.each do |a| %>
                   <% user=User.find_by(name:a) %>
                   <% att=user.attendances.where(user_id:user.id,sperior:@user.name) %>
-                 
-                    <h3><%="[#{a}からの勤怠変更申請]" %></h3>
+                    
+                    <h3><%="[#{user.name}からの勤怠変更申請]" %></h3>
+                   <% att.each do |at| %>
+                   <!--承認、否認チェック-->
                    
+                     <% if !(at.result=="承認" || at.result=="否認") %>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -46,9 +49,10 @@
                                 <th>時</th>
                                 <th>分</th>
                             </tr>
+                          
                         </thead>
                         <tbody>
-                            <% att.each do |at| %>
+                            
                               <%=fields_for "attendances[]",at do |af| %>
                               <tr>
                                   <td><%=at.worked_on.to_s(:date)  %></td>
@@ -66,7 +70,9 @@
                                   <td><%=af.check_box :box,{:checked=>false} %></td>
                                   <td><%=link_to "確認",user_path(at.user,params:{first_day:at.first_day}),class:"btn btn-primary" %></td>
                               </tr>
+                              
                               <% end %>
+                            <% end %>
                             <% end %>
                         </tbody>
                     </table>

@@ -5,6 +5,7 @@ class UsersController < ApplicationController
   before_action :admin_user,only:[:index]
   before_action :page_block,only:[:show]
   before_action :startLogin
+ 
   
   
   def index    #一覧
@@ -78,6 +79,7 @@ class UsersController < ApplicationController
   def show  #勤怠ページ
     @user = User.find(params[:id])
     @send=Send.new
+    @notice=Notice.find 1 if Notice.exists?
     if params[:first_day].nil?
         @first_day=Date.today.beginning_of_month     
     else
@@ -110,7 +112,9 @@ class UsersController < ApplicationController
      @sends=Send.where(superior:current_user.name)
      array=[]
      @sends.each do |send|
-       array << send.user.name
+       if send.conf=="申請中" || send.conf=="なし" || send.conf==nil
+         array << send.user.name
+       end
      end   
      @nameArray=array.uniq
   end
@@ -126,6 +130,12 @@ class UsersController < ApplicationController
   
   def sendcreate
     @send=Send.new(send_parameter)
+    @notice=Notice.find 1
+    integer=@notice.one_month_num
+    integer+=1
+    @notice.one_month_num=integer
+    @notice.save
+    
     if @send.save
       redirect_to root_url
     else  
@@ -177,4 +187,5 @@ private
        end    
          
   end
+ 
 end

@@ -29,6 +29,10 @@ class AttendancesController < ApplicationController
     def update
         
         @user=User.find(params[:id])
+        @notice=Notice.find 1 if Notice.exists?
+        num=@notice.edit_num+1
+        @notice.edit_num=num
+        @notice.save
         
         if attendances2_invalid?
             parameter.each do |id,item|
@@ -67,25 +71,34 @@ class AttendancesController < ApplicationController
         @user=User.find(params[:id])
         @attendances=Attendance.where(sperior:@user.name)
         @attendances.each do |att|
-            names << att.user.name
+            if att.result==nil
+              names << att.user.name
+            end
         end            
         @names=names.uniq
         
     end              #勤怠申請確認
     def confirmation
+         @notice=Notice.find 1 if Notice.exists?
+         num=0
          if attendances2_invalid?
             parameter.each do |id,item|
                if item[:box].to_i==1
                 attendance=Attendance.find(id)
                 attendance.update_attributes(item)
-               end    
+                num+=1
+               end   
             end
             flash[:success]="編集しました"
             redirect_to root_url
+            num2=@notice.edit_num
+            num3=num2+num
+            @notice.edit_num=num3
+            @notice.save
          else
             flash[:danger]="編集失敗しました"
             redirect_to edit_attendances_path(@user,params[:date])
-         end        
+         end 
     end   
 private
    def parameter

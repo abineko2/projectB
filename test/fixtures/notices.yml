@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  one_month_num: 1
+  edit_num: 1
+  over_time_num: 1
+
+two:
+  one_month_num: 1
+  edit_num: 1
+  over_time_num: 1

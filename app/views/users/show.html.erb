@@ -29,23 +29,25 @@
 <% if @user.superior?%>
   <div id="admin_info">
       <% sends=Send.where(superior:@user.name) %>
-      <%=attendances=Attendance.where(sperior:@user.name).count %>
-      <%=over_times=Send2.where(sperior:@user.name).count %>
+      <%=attendances=Attendance.where(sperior:@user.name,result:nil).count %>
+      <% @notice.edit_num=attendances %>
+      <% @notice.save %>
+      <%　over_times=Send2.where(sperior:@user.name).count %>
        <% count=sends.count %>
      
        
-       <% if count>0  && current_user.superior? %>
-             <h2 style="color:red;">[所属長承認申請のお知らせ]&emsp;&emsp;<%=link_to "#{count}件の通知があります",box_path,remote:true,id:"lb" %></h2>
+       <% if @notice.one_month_num>0  && current_user.superior? %>
+             <h2 style="color:red;">[所属長承認申請のお知らせ]&emsp;&emsp;<%=link_to "#{@notice.one_month_num}件の通知があります",box_path,remote:true,id:"lb" %></h2>
        <% else %>
              <h2>[所属長承認申請のお知らせ]</h2>
       <% end %>     
-      <% if attendances>0  && current_user.superior? %>
-             <h2 style="color:red;">[勤怠変更承認申請のお知らせ]&emsp;&emsp;<%=link_to "#{attendances}件の通知があります",user_attendance_box_path,remote:true,id:"lb" %></h2>
+      <% if @notice.edit_num>0  && current_user.superior?  %>
+             <h2 style="color:red;">[勤怠変更承認申請のお知らせ]&emsp;&emsp;<%=link_to "#{@notice.edit_num}件の通知があります",user_attendance_box_path,remote:true,id:"lb" %></h2>
        <% else %>
             <h2>[勤怠変更承認申請のお知らせ]</h2>
       <% end %>     
-       <% if over_times>0  && current_user.superior? %>
-             <h2 style="color:red;">[残業申請のお知らせ]&emsp;&emsp;<%=link_to "#{over_times}件の通知があります",over_time_box3_path,remote:true,id:"lb" %></h2>
+       <% if @notice.over_time_num>0  && current_user.superior? %>
+             <h2 style="color:red;">[残業申請のお知らせ]&emsp;&emsp;<%=link_to "#{@notice.over_time_num}件の通知があります",over_time_box3_path,remote:true,id:"lb" %></h2>
        <% else %>
             <h2>[残業申請のお知らせ]</h2>
       <% end %>     
