@@ -52,7 +52,7 @@
                           
                         </thead>
                         <tbody>
-                            
+                              <% @link=false %>
                               <%=fields_for "attendances[]",at do |af| %>
                               <tr>
                                   <td><%=at.worked_on.to_s(:date)  %></td>
@@ -68,7 +68,8 @@
                                   <td><%=at.note %></td>
                                   <td><%=af.select :result,list_answer,{},class:"form-control" %></td>
                                   <td><%=af.check_box :box,{:checked=>false} %></td>
-                                  <td><%=link_to "確認",user_path(at.user,params:{first_day:at.first_day}),class:"btn btn-primary" %></td>
+                              
+                                  <td><%=link_to "確認",user_path(at.user,params:{first_day:at.first_day,link:@link}),class:"btn btn-primary" %></td>
                               </tr>
                               
                               <% end %>

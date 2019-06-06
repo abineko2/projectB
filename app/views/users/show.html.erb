@@ -4,11 +4,13 @@
     <table class="table table-bordered">
     <tr>
         <td>
+          <% if @link==true %>    
             <%=link_to "←",user_path(id:@user.id,params:{first_day:@first_day.prev_month}),class:"btn btn-primary" %>
             &emsp;<%=@first_day.to_s(:hour_month) %>&emsp;
              時間管理表
             &emsp; 
             <%=link_to "→",user_path(id:@user.id,params:{first_day:@first_day.next_month}),class:"btn btn-primary" %> 
+          <% end %>    
         </td>
         <td>
             <%="指定勤務時間   #{time_format(@user.designated_work_start_time)}" %><br>
@@ -56,19 +58,22 @@
   </div>
 <% end %>
 <div>
+    <% if @link==true %>
     <ul style="list_style:none;">
         <li style="display:inline;"><%=link_to "勤怠を編集",edit_attendances_path(@user,@first_day),class:"btn btn-primary" %></li>
         <li style="display:inline;"><%= link_to "CSV出力", user_path(@user, params:{first_day: @first_day },format: :csv), class: "btn btn-primary" %></li>
         <li style="display:block;"><%=link_to "勤怠修正ログ(承認済)",logview_path,class:"btn btn-primary" %></li>
     </ul>
-   
+    <% end %>
 </div>
 </div>
 <div style="margin-top:10px;margin-left:15%;width:70%;">
-    <table class="table table-bordered table-condensed table-striped ">
+    <table class="table table-bordered table-condensed table-striped " id="tv">
         <thead>
              <tr>
-                <th rowspan="3">残業申請</th> 
+                <% if @link==true %> 
+                 <th rowspan="3">残業申請</th> 
+                <% end %> 
                 <th rowspan="3">日付</th>
                 <th rowspan="3">曜日</th> 
                 <th colspan="7">[実績]</th>
@@ -103,7 +108,11 @@
         <tbody>
             <% @dates.each do |day| %>
               <tr>
-                  <td><%=link_to "残業申請",over_time_path(@user.id,day.worked_on),remote:true,class:"btn btn-primary" %></td>
+                  <% if @link==true %>
+                    <td><%=link_to "残業申請",over_time_path(@user.id,day.worked_on),remote:true,class:"btn btn-primary" %></td>
+                  <% else %>    
+                    <style> #tv{width:930px;}</style>
+                  <% end %>
                   <td><%=day.worked_on.to_s(:date) %></td>
                       <% week=%w(日 月 火 水 木 金 土)[day.worked_on.wday] %>
                       <% if week["土"] %>
@@ -167,6 +176,7 @@
                 <td colspan="5"></td>
                 <td><%= working_time_sum(@total) unless @total.nil? %></td>
                 <td colspan="6"></td>
+                <% if @link==true %>
                 <td>
                     <% obj=@user.sends.where(month:@first_day.to_s(:month)).last  %>
                     
@@ -186,6 +196,7 @@
                        <%=f.submit "申請", class:"btn bt-sm btn-primary" %>
                     <% end %>
                 </td>
+            <% end %>    
             </tr>
         </tfoot>
     </table>

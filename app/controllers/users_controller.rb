@@ -106,6 +106,11 @@ class UsersController < ApplicationController
        @sends=Send.all
    
     end  
+    if params[:link].nil?
+      @link=true
+    else
+      @link=params[:link]
+    end  
   end
   def box
     @user=User.find(params[:id])
