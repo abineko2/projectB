@@ -15,7 +15,6 @@ class Send2sController < ApplicationController  #残業申請アクション
         tomorrow=date.to_date+1
         attend=Attendance.find_by(worked_on:tomorrow)
         attend.plans=send2_parameter[:new_finish]
-        attend.answer="申告中"
         attend.save
         
         @send2.time=tomorrow.to_s(:date)

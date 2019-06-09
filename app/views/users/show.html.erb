@@ -193,21 +193,21 @@
                   <!--/残業処理--> 
                   <% over=@user.send2s.find_by(worked_on:day.worked_on) %>
                   <td>
-                       <% if day.result.present? %>
+                       <% if day.present? %>
                         <% if day.result=="承認" %>
-                          <p><%="勤怠申請:#{day.sperior}により承認済み" %></p>
+                          <p style="color:blue"><%="勤怠申請:#{day.sperior}により承認済み" %></p>
                         <% elsif  day.result=="否認" %>
-                           <p><%="勤怠申請:#{day.sperior}により否認済み" %></p>
-                        <% elsif day.result=="" || day.result=="申告中" %>   
-                           <p><%="勤怠申請:#{day.sperior}に申告中" %></p>
+                           <p style="color:red"><%="勤怠申請:#{day.sperior}により否認済み" %></p>
+                        <% else %>   
+                           <p><%="勤怠申請:#{day.sperior}に申告中" if day.sperior.present? %></p>
                         <% end %>
                       <% end %>
                       
                       <% if over.present? %>
                         <% if over.answer=="承認" %>
-                          <p><%="残業申請:#{over.sperior}により承認済み" %></p>
+                          <p style="color:blue;"><%="残業申請:#{over.sperior}により承認済み" %></p>
                         <% elsif  over.answer=="否認" %>
-                           <p><%="残業申請:#{over.sperior}により否認済み" %></p>
+                           <p style="color:red;"><%="残業申請:#{over.sperior}により否認済み" %></p>
                         <% else  %>   
                            <p><%="残業申請:#{over.sperior}に申告中" %></p>
                         <% end %>
