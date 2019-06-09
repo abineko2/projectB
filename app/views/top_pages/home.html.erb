@@ -1,7 +1,14 @@
 <%=provide(:title,"HOME") %>
 
+<% if current_user.nil? %>
 <div class="top_page_area">
     <h1>勤怠システム</h1>
     <div class="login_button"><%=link_to "ログイン",login_path,class:"btn btn-primary" %></div>
     <%=link_to "アカウントの作成はこちらから",new_user_path %>
 </div>
+<% else %>
+  <div style="text-align:center;margin-top:50px;">
+       <h3 style="color:orange;font-weight:bold;font-size:38px;">お疲れ様です。今日も頑張りましょう。</h3>
+  </div>
+ 
+<% end %>

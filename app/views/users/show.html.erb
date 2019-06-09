@@ -31,7 +31,7 @@
 <% if @user.superior?%>
   <div id="admin_info">
       <% sends=Send.where(superior:@user.name) %>
-      <%=attendances=Attendance.where(sperior:@user.name,result:nil).count %>
+      <% attendances=Attendance.where(sperior:@user.name,result:nil).count %>
       <% @notice.edit_num=attendances %>
       <% @notice.save %>
       <%　over_times=Send2.where(sperior:@user.name).count %>
@@ -39,19 +39,19 @@
      
        
        <% if @notice.one_month_num>0  && current_user.superior? %>
-             <h2 style="color:red;">[所属長承認申請のお知らせ]&emsp;&emsp;<%=link_to "#{@notice.one_month_num}件の通知があります",box_path,remote:true,id:"lb" %></h2>
+             <h5 style="color:red;">[所属長承認申請のお知らせ]&emsp;&emsp;<%=link_to "#{@notice.one_month_num}件の通知があります",box_path,remote:true,id:"lb" %></h5>
        <% else %>
-             <h2>[所属長承認申請のお知らせ]</h2>
+             <h5>[所属長承認申請のお知らせ]</h5>
       <% end %>     
       <% if @notice.edit_num>0  && current_user.superior?  %>
-             <h2 style="color:red;">[勤怠変更承認申請のお知らせ]&emsp;&emsp;<%=link_to "#{@notice.edit_num}件の通知があります",user_attendance_box_path,remote:true,id:"lb" %></h2>
+             <h5 style="color:red;">[勤怠変更承認申請のお知らせ]&emsp;&emsp;<%=link_to "#{@notice.edit_num}件の通知があります",user_attendance_box_path,remote:true,id:"lb" %></h5>
        <% else %>
-            <h2>[勤怠変更承認申請のお知らせ]</h2>
+            <h5>[勤怠変更承認申請のお知らせ]</h5>
       <% end %>     
        <% if @notice.over_time_num>0  && current_user.superior? %>
-             <h2 style="color:red;">[残業申請のお知らせ]&emsp;&emsp;<%=link_to "#{@notice.over_time_num}件の通知があります",over_time_box3_path,remote:true,id:"lb" %></h2>
+             <h5 style="color:red;">[残業申請のお知らせ]&emsp;&emsp;<%=link_to "#{@notice.over_time_num}件の通知があります",over_time_box3_path,remote:true,id:"lb" %></h5>
        <% else %>
-            <h2>[残業申請のお知らせ]</h2>
+            <h5>[残業申請のお知らせ]</h5>
       <% end %>     
     
      
@@ -125,17 +125,50 @@
 
                   
                   <% sh=day.start_at.to_s(:hour) if day.start_at.present? %>
-                  <td><%=sh %></td>
-                  <td><%=day.start_at.to_s(:min) if day.start_at.present? %></td>
-                 
+                  <td>
+                        <!--変更された出勤あるか？ -->
+                        
+                      <% if day.new_start.present? %>
+                         <%=day.new_start.to_s(:hour) if day.new_start.present? %>
+                      <% else %>
+                        <%=sh %>
+                      <% end %>
+                  </td>
+                  <td>
+                      <!--変更された出勤あるか？ -->
+                      
+                      <% if day.new_start.present? %>
+                         <%=day.new_start.to_s(:min) if day.new_start.present? %>
+                      <% else %>
+                       <%=day.start_at.to_s(:min) if day.start_at.present? %>
+                      <% end %>
+                  </td>
+               
                   <td>
                       <% if day.worked_on==Date.today && day.start_at==nil %>
                         <%=button_to "出勤",user_attendances_path(@user),class:"btn btn-primary btn-block" %>
                       <% end %>
                   </td>
                  
-                  <td><%=day.finished_at.to_s(:hour) if day.finished_at.present? %></td>
-                  <td><%=day.finished_at.to_s(:min) if day.finished_at.present? %></td>
+                  <td>
+                        <!--変更された退勤あるか？ -->
+                        
+                      <% if day.new_finish.present? %>
+                         <%=day.new_finish.to_s(:hour) if day.new_start.present? %>
+                      <% else %>
+                        <%=day.finished_at.to_s(:hour) if day.finished_at.present? %>
+                      <% end %>
+                      
+                  </td>
+                  <td>
+                       <!--変更された退勤あるか？ -->
+                        
+                      <% if day.new_finish.present? %>
+                         <%=day.new_finish.to_s(:min) if day.new_finish.present? %>
+                      <% else %>
+                        <%=day.finished_at.to_s(:min) if day.finished_at.present? %>
+                      <% end %>
+                  </td>
                   <td>
                       <% if day.worked_on==Date.today && day.start_at.present? && day.finished_at==nil %>
                         <%=button_to "退勤",user_attendances_path(@user),class:"btn btn-primary btn-block" %>
@@ -153,19 +186,33 @@
                   <!--残業関連処理---->
                   <% time= day.worked_on.to_s(:date) %>
                   <% send=@user.send2s.find_by(time:time) %>
-                      <td><%=send.new_finish.to_s(:hour) if send.present? && send.answer=="承認" %></td>
-                      <td><%=send.new_finish.to_s(:min) if send.present? &&send.answer=="承認" %></td>
-                      <td><%=send.overtime if send.present? if send.present? &&send.answer=="承認" %></td>
-                      <td><%=send.note if send.present? &&send.answer=="承認" %></td>
-                  <!--/残業処理-->    
-                  <% if day.result=="承認" %>
-                    <td>勤怠変更承認済み</td>
-                  <% elsif day.result=="否認" %>
-                  　<td>勤怠変更否認</td>
-                  <% else %>
-                     <td></td>
-                  <% end %>
-                 
+                      <td><%=day.plans.present? ? "[翌日]"+day.plans.to_s(:hour): send.new_finish.to_s(:hour) if send.present? %></td>
+                      <td><%=day.plans.present? ? "[翌日]"+day.plans.to_s(:min) : send.new_finish.to_s(:min) if send.present? %></td>
+                      <td><%=send.overtime.present? ? send.overtime : over_calc(send.new_finish,@user.designated_work_end_time) if send.present?  %></td>
+                      <td><%=send.note if send.present? %></td>
+                  <!--/残業処理--> 
+                  <% over=@user.send2s.find_by(worked_on:day.worked_on) %>
+                  <td>
+                       <% if day.result.present? %>
+                        <% if day.result=="承認" %>
+                          <p><%="勤怠申請:#{day.sperior}により承認済み" %></p>
+                        <% elsif  day.result=="否認" %>
+                           <p><%="勤怠申請:#{day.sperior}により否認済み" %></p>
+                        <% elsif day.result=="" || day.result=="申告中" %>   
+                           <p><%="勤怠申請:#{day.sperior}に申告中" %></p>
+                        <% end %>
+                      <% end %>
+                      
+                      <% if over.present? %>
+                        <% if over.answer=="承認" %>
+                          <p><%="残業申請:#{over.sperior}により承認済み" %></p>
+                        <% elsif  over.answer=="否認" %>
+                           <p><%="残業申請:#{over.sperior}により否認済み" %></p>
+                        <% else  %>   
+                           <p><%="残業申請:#{over.sperior}に申告中" %></p>
+                        <% end %>
+                      <% end %>
+                 </td>
               </tr>
             <% end %>
         </tbody>

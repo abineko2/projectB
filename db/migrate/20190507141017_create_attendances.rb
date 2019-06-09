@@ -7,6 +7,7 @@ class CreateAttendances < ActiveRecord::Migration[5.1]
       t.datetime :finished_at
       t.datetime :new_start
       t.datetime :new_finish
+      t.datetime :plans
       t.boolean :box
       t.string :note
       t.references :user, foreign_key: true

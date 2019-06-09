@@ -31,7 +31,7 @@ class UsersController < ApplicationController
     if @user.save
        login(@user)
       flash[:success]="登録しました"
-      redirect_to @user
+      redirect_to root_url
     else    
       render :new
     end
@@ -79,7 +79,7 @@ class UsersController < ApplicationController
   def show  #勤怠ページ
     @user = User.find(params[:id])
     @send=Send.new
-    @notice=Notice.find 1 if Notice.exists?
+    @notice=Notice.find @user.id if @user.superior?
     if params[:first_day].nil?
         @first_day=Date.today.beginning_of_month     
     else
@@ -135,12 +135,14 @@ class UsersController < ApplicationController
   
   def sendcreate
     @send=Send.new(send_parameter)
-    @notice=Notice.find 1
-    integer=@notice.one_month_num
-    integer+=1
-    @notice.one_month_num=integer
-    @notice.save
-    
+    @superior=User.find_by(name:@send.superior)
+    if @superior
+      @notice=Notice.find @superior.id 
+      integer=@notice.one_month_num
+      integer+=1
+      @notice.one_month_num=integer
+      @notice.save
+    end
     if @send.save
       redirect_to root_url
     else  

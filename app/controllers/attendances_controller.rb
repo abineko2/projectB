@@ -29,15 +29,19 @@ class AttendancesController < ApplicationController
     def update
         
         @user=User.find(params[:id])
-        @notice=Notice.find 1 if Notice.exists?
-        num=@notice.edit_num+1
-        @notice.edit_num=num
-        @notice.save
         
         if attendances2_invalid?
             parameter.each do |id,item|
                 attendance=Attendance.find(id)
+                @superior=User.find_by(name: item[:sperior])
+                @notice=Notice.find @superior.id if @superior
+                num=@notice.edit_num+1 
+                @notice.edit_num=num
+                @notice.save
+               
                 attendance.update_attributes(item)
+               
+                
             end
             flash[:success]="編集しました"
             redirect_to user_url(@user,params:{first_day:params[:date]})
@@ -79,22 +83,26 @@ class AttendancesController < ApplicationController
         
     end              #勤怠申請確認
     def confirmation
-         @notice=Notice.find 1 if Notice.exists?
-         num=0
+         
          if attendances2_invalid?
             parameter.each do |id,item|
-               if item[:box].to_i==1
                 attendance=Attendance.find(id)
+                if item[:result]=="承認" || item[:result]=="否認"
+                    @superior=User.find_by(name: item[:sperior])
+                    @notice=Notice.find @superior.id if @superior
+                    num=@notice.edit_num.to_i if @notice
+                    
+                    num=num-1
+                    @notice.edit_num=num
+                    @notice.save
+                end
+                
                 attendance.update_attributes(item)
-                num+=1
-               end   
+               
             end
             flash[:success]="編集しました"
             redirect_to root_url
-            num2=@notice.edit_num
-            num3=num2+num
-            @notice.edit_num=num3
-            @notice.save
+            
          else
             flash[:danger]="編集失敗しました"
             redirect_to edit_attendances_path(@user,params[:date])

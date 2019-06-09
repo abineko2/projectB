@@ -1,5 +1,15 @@
-<div class="header_left">
-    <h1>勤怠システム</h1>
+<div class="header_left" style="margin-right:40px;">
+    <ul style="list_style:none;margin:0;padding:0;">
+        <li style="display:inline-block;"><h1>勤怠システム</h1></li>&emsp;
+        <% if current_user.present? && current_user.admin? %>
+           <li style="color:red;font-weight:bold;;display:inline-block;"><%=current_user.name if current_user.present? %></li>
+        <% elsif current_user.present? && current_user.superior? %>
+            <li style="color:green;font-weight:bold;display:inline-block;"><%=current_user.name if current_user.present? %></li>
+        <% else %>
+             <li style="color:white;font-weight:bold;display:inline-block;"><%=current_user.name if current_user.present?  %></li>
+        <% end %>
+    </ul>
+   
     <h4 style="color:yellow;">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;植松　勇貴</h4>
 </div>
 <nav class="nav">

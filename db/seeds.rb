@@ -16,7 +16,12 @@ User.create!(name:"斎藤",email:"superior1@sample.com",
 User.create!(name:"吉井",email:"superior2@sample.com",
              password:"password",employee_number:3,uid:"superior2",
              password_confirmation: "password",superior:true,
-             admin: false)                   
+             admin: false)   
+
+Notice.create!(user_id: 1)
+Notice.create!(user_id: 2)
+Notice.create!(user_id: 3)
+
              
 
 59.times do |n|

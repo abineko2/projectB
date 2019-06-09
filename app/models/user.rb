@@ -2,6 +2,7 @@ class User < ApplicationRecord
     has_many:attendances,dependent: :destroy
     has_many:sends,dependent: :destroy
     has_many:send2s,dependent: :destroy
+    has_many :notices
     
     has_secure_password
     validates :name,presence:true,length:{maximum:30}

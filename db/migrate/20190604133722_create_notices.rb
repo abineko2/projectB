@@ -4,6 +4,7 @@ class CreateNotices < ActiveRecord::Migration[5.1]
       t.integer :one_month_num,default:0
       t.integer :edit_num,default:0
       t.integer :over_time_num,default:0
+      t.integer :user_id
 
       t.timestamps
     end

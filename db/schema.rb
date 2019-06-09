@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20190604133722) do
     t.datetime "finished_at"
     t.datetime "new_start"
     t.datetime "new_finish"
+    t.datetime "plans"
     t.boolean "box"
     t.string "note"
     t.integer "user_id"
@@ -41,6 +42,7 @@ ActiveRecord::Schema.define(version: 20190604133722) do
     t.integer "one_month_num", default: 0
     t.integer "edit_num", default: 0
     t.integer "over_time_num", default: 0
+    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -51,7 +53,7 @@ ActiveRecord::Schema.define(version: 20190604133722) do
     t.string "time"
     t.string "overtime"
     t.datetime "new_finish"
-    t.boolean "box"
+    t.boolean "box", default: false
     t.string "note"
     t.string "answer"
     t.integer "user_id"

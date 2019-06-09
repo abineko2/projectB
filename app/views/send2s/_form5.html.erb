@@ -33,7 +33,7 @@
                           <% if !(send.answer=="承認" || send.answer=="否認") %>
                           <%=fields_for "send2s[]",send do |af| %>
                           <tr>
-                                <td><%=send.worked_on.to_s(:date) %></td>
+                                <td><%=send.time %></td>
                                 <td><%=%w(日 月 火 水 木 金 土)[send.worked_on.wday] %></td>
                                 <td><%=send.new_finish.to_s(:time) %></td>
                                 <td><%=user.designated_work_end_time.to_s(:time) %></td>

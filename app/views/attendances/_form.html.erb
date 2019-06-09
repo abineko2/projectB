@@ -66,6 +66,7 @@
                                   <td><%=at.new_finish.to_s(:hour) if at.new_finish.present?  %></td>
                                   <td><%=at.new_finish.to_s(:min) if at.new_finish.present?  %></td>
                                   <td><%=at.note %></td>
+                                  <%=af.hidden_field :sperior,value:@user.name %>
                                   <td><%=af.select :result,list_answer,{},class:"form-control" %></td>
                                   <td><%=af.check_box :box,{:checked=>false} %></td>
                               

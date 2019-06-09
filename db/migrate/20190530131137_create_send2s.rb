@@ -6,7 +6,7 @@ class CreateSend2s < ActiveRecord::Migration[5.1]
       t.string:time
       t.string :overtime
       t.datetime :new_finish
-      t.boolean :box
+      t.boolean :box,default:false
       t.string :note
       t.string :answer
       t.references :user, foreign_key: true

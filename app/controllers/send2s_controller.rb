@@ -2,20 +2,40 @@ class Send2sController < ApplicationController  #残業申請アクション
   def index
   end
 
-  def content  #残業申請フォーム作成
+  def content  #残業申請フォーム作成quit
     @user=User.find(params[:id])
-    @notice=Notice.find 1
+    @superior=User.find_by(name:send2_parameter[:sperior])
+    @notice=Notice.find @superior.id
+    
     num=@notice.over_time_num
     if request.post?
       @send2=@user.send2s.new(send2_parameter)
+      if send2_parameter[:box].to_i==1
+        date=send2_parameter[:worked_on]
+        tomorrow=date.to_date+1
+        attend=Attendance.find_by(worked_on:tomorrow)
+        attend.plans=send2_parameter[:new_finish]
+        attend.answer="申告中"
+        attend.save
+        
+        @send2.time=tomorrow.to_s(:date)
+        @send2.worked_on=tomorrow
+      end
+      
       num+=1
       @notice.over_time_num=num
       @notice.save
-      if @send2.save!
-        redirect_to root_url
-      else  
+      if send2_parameter[:sperior]==""
+        flash[:danger] = "上長を選んでください"
+        redirect_to @user
+      else
         
+        if @send2.save!
+        
+           redirect_to root_url
+        end  
       end  
+      
     end  
     
   end
@@ -40,12 +60,16 @@ class Send2sController < ApplicationController  #残業申請アクション
   end
   
   def update
-    @notice=Notice.find 1
-    num=@notice.over_time_num
+    
     parameter.each do |id,item|
        if item[:box].to_i==1
           send=Send2.find(id)
+          @superior=User.find_by(name:send.sperior)
+       
+          @notice=Notice.find @superior.id
+          num=@notice.over_time_num
           send.update_attributes(item)
+          
           if send.answer=="承認" || send.answer=="否認"
             num-=1
             @notice.over_time_num=num
