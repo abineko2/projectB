@@ -1,6 +1,7 @@
 class BasesController < ApplicationController
   before_action :pages_block
   before_action :log_in_user
+  before_action :number_control
   def index
     @bases=Base.all
     @base=Base.new

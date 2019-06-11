@@ -1,11 +1,12 @@
 class Send2sController < ApplicationController  #残業申請アクション
+  before_action :number_control
   def index
   end
 
-  def content  #残業申請フォーム作成quit
+  def content  #残業申請フォーム作成
     @user=User.find(params[:id])
     @superior=User.find_by(name:send2_parameter[:sperior])
-    @notice=Notice.find @superior.id
+    @notice=Notice.find_by(user_id:@superior.id)
     
     num=@notice.over_time_num
     if request.post?
@@ -30,7 +31,7 @@ class Send2sController < ApplicationController  #残業申請アクション
       else
         
         if @send2.save!
-        
+           
            redirect_to root_url
         end  
       end  
@@ -65,7 +66,7 @@ class Send2sController < ApplicationController  #残業申請アクション
           send=Send2.find(id)
           @superior=User.find_by(name:send.sperior)
        
-          @notice=Notice.find @superior.id
+          @notice=Notice.find_by(user_id:@superior.id)
           num=@notice.over_time_num
           send.update_attributes(item)
           

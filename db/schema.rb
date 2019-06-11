@@ -13,7 +13,7 @@
 ActiveRecord::Schema.define(version: 20190604133722) do
 
   create_table "attendances", force: :cascade do |t|
-    t.string "sperior"
+    t.string "sperior", default: ""
     t.date "worked_on"
     t.datetime "start_at"
     t.datetime "finished_at"
@@ -22,11 +22,15 @@ ActiveRecord::Schema.define(version: 20190604133722) do
     t.datetime "plans"
     t.boolean "box"
     t.string "note"
+    t.string "year"
+    t.string "month"
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "first_day"
-    t.string "result"
+    t.string "result", default: ""
+    t.datetime "center_s"
+    t.datetime "center_f"
     t.index ["user_id"], name: "index_attendances_on_user_id"
   end
 

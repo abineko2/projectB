@@ -20,4 +20,23 @@ module UsersHelper
     def over_calc(tm,tm2)
          format("%.2f",(tm.hour*60+tm.min-tm2.hour*60+tm2.min)/60.0)
     end
+    def number_control
+        @notices=Notice.all
+        @notices.each do |notice|
+            if notice.one_month_num<0
+                notice.one_month_num=0
+                notice.save
+            end
+        #=============================
+            if notice.edit_num<0
+                notice.edit_num=0
+                notice.save
+            end 
+        #=============================
+            if notice.over_time_num<0
+                notice.over_time_num=0
+                notice.save
+            end    
+        end        
+    end        
 end

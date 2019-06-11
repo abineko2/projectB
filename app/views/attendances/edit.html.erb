@@ -25,16 +25,18 @@
                   <td><%=day.worked_on.to_s(:date) %></td>
                   <td><%=%w(日 月 火 水 木 金 土)[day.worked_on.wday] %></td>
                   <%=af.hidden_field :worked_on,value:day.worked_on %>
+                  <%=af.hidden_field :year,value:day.worked_on.to_s(:year) %>
+                  <%=af.hidden_field :month,value:day.worked_on.to_s(:months) %>
                   <%=af.hidden_field :first_day,value:@first_day %>
-                  <%=af.hidden_field :start_at,value:day.start_at %>
-                  <%=af.hidden_field :finished_at,value:day.finished_at %>
+                  <%=af.hidden_field :center_s,value:day.new_start %>
+                  <%=af.hidden_field :center_f,value:day.new_finish %>
                   <td><%=af.time_field :new_start,class:"form-control" %></td>
                   <td><%=af.time_field :new_finish,class:"form-control" %></td>
                   <td><%=af.check_box :box,{:checked=>false} %></td>
                   <%=af.hidden_field :user_id,value:@user.id %>
                   <td>
-                      <% if day.start_at.present? && day.finished_at.present? %>
-                        <%=working_time(day.finished_at,day.start_at) %>
+                      <% if day.center_s.present? && day.center_f.present? %>
+                        <%=working_time(day.center_f,day.center_s) %>
                       <% end %>
                   </td>
                   <td><%=af.text_field :note %></td>

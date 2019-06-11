@@ -17,6 +17,9 @@ class User < ApplicationRecord
             user=find_by(id:row['id']) || new
             user.attributes=row.to_hash.slice(*import_parameters)
             user.save!
+            if user.superior==true
+                Notice.create!(user_id:user.id)
+            end        
         end        
     end
     

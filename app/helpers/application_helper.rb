@@ -3,4 +3,5 @@ module ApplicationHelper
         default="勤怠システム"
         page_title=="" ? default : page_title+"|#{default}"
     end    
+    
 end

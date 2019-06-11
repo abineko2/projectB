@@ -57,16 +57,17 @@
                               <tr>
                                   <td><%=at.worked_on.to_s(:date)  %></td>
                                   <td><%=%w{日 月 火 水 木 金 土}[at.worked_on.wday] %></td>
-                                  <td><%=at.start_at.to_s(:hour) if at.start_at.present?  %></td>
-                                  <td><%=at.start_at.to_s(:min) if at.start_at.present?  %></td>
-                                  <td><%=at.finished_at.to_s(:hour) if at.finished_at.present?  %></td>
-                                  <td><%=at.finished_at.to_s(:min) if at.finished_at.present?  %></td>
+                                  <td><%=at.center_s.to_s(:hour) if at.center_s.present?  %></td>
+                                  <td><%=at.center_s.to_s(:min) if at.center_s.present?  %></td>
+                                  <td><%=at.center_f.to_s(:hour) if at.center_f.present?  %></td>
+                                  <td><%=at.center_f.to_s(:min) if at.center_f.present?  %></td>
                                   <td><%=at.new_start.to_s(:hour) if at.new_start.present?  %></td>
                                   <td><%=at.new_start.to_s(:min) if at.new_start.present?  %></td>
                                   <td><%=at.new_finish.to_s(:hour) if at.new_finish.present?  %></td>
                                   <td><%=at.new_finish.to_s(:min) if at.new_finish.present?  %></td>
                                   <td><%=at.note %></td>
                                   <%=af.hidden_field :sperior,value:@user.name %>
+                                  
                                   <td><%=af.select :result,list_answer,{},class:"form-control" %></td>
                                   <td><%=af.check_box :box,{:checked=>false} %></td>
                               

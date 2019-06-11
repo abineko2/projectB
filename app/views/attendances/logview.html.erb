@@ -3,29 +3,50 @@
     <%=provide(:title,"勤怠ログ") %>
     
 </div>
+
 <div id="log_form">
-    
-    <%=form_for(@attendance,url:"#") do |f| %>
-      <%=f.submit "リセット",class:"btn btn-default" %><br>
-      <table>
-          <tr>
-              <td><%=f.select :note,[["年▼","年"],[1,1],[2,2]],{},class:"select1"%></td>
-              <td> <div id="selectlabe22">mmm</div></td>
-          </tr>
-           <tr>
-              <td><%=f.select :note,[["月▼","月"],[3,3],[4,4]],{},class:"select2"%></td>
-              <td><div id="selectlabe2">mmm</div></td>
-          </tr>
-      </table>
+    <button id="bt" class="btn btn-default">リセット</button>
+    <%=form_tag(logviews_path,name:"form") do  %>
+        <div class="row">
+            <div class="col-md-6">
+                <br>
+                <%=select_tag :year,options_for_select(year_list),class:"form-control select1"%>
+                <%=select_tag :month,options_for_select(month_list),class:"form-control select2"%>
+            </div>
+        </div>      
     <% end %>
-    <table class="table table-bordered table-condensed table-striped">
+    <table class="table table-bordered table-condensed table-striped" id="tv">
         <thread>
             <tr>
                 <th>日付</th><th>変更前出社時間</th><th>変更前退社社時間</th><th>変更後出社</th><th>変更後社</th><th>指示者</th><th>承認日</th>
             </tr>
         </thread>
         <tbody>
-            
+            <% unless @attends.nil? %>
+            <% @attends.each do |at|  %>
+               <tr>
+                   <td><%=at.worked_on.to_s(:date) %></td>
+                   <td>
+                       <% if at.start_at.nil? %>
+                         <%=at.center_s.to_s(:time) if at.center_s.present? %>
+                       <% else %>
+                         <%=at.start_at.to_s(:time) if at.start_at.present? %>
+                       <% end %>     
+                   </td>
+                   <td>
+                       <% if at.finished_at.nil? %>
+                          <%=at.center_f.to_s(:time) if at.center_f.present? %>
+                       <% else %>
+                         <%=at.finished_at.to_s(:time) if at.finished_at.present? %>
+                       <% end %>
+                  </td>
+                   <td><%=at.new_start.to_s(:time) if at.new_start.present? %></td>
+                   <td><%=at.new_finish.to_s(:time) if at.new_finish.present? %></td>
+                   <td><%=at.sperior %></td>
+                   <td><%=at.updated_at.to_s(:date) %></td>
+               </tr>
+            <% end %>
+            <% end %>
         </tbody>
     </table>
 </div>
@@ -36,38 +57,38 @@
   }
   select{border-radius:6px;appearance: none;-webkit-appearance: none;/* ベンダープレフィックス(Google Chrome、Safari用) */
 -moz-appearance: none;	/* ベンダープレフィックス(Firefox用) */padding:10px;}
-   #selectlabe22{
+   .select1{
           border-radius:6px;
           background-color:#e0e0e0;
-          padding:10px;
-          padding-right:150px;
+          
       }
-  #selectlabe2{
+  .select2{
           border-radius:6px;
           background-color:#e0e0e0;
-          padding:10px;
-          padding-right:150px;
+          
       }
 </style>
 <script>
+  var bt=document.getElementById('bt');
+    bt.addEventListener('click',function(){
+        var table = document.getElementById("tv");
+        while (table.rows.length >1) table.deleteRow(1);
+    });
     $(function(){
         $('.select1').change(function() {
  
             //選択したvalue値を変数に格納
             var val = $(this).val();
          
-            //選択したvalue値をdiv要素に出力
-            $('#selectlabe22').text(val);
-            $(this).val("年");
+            
          });
           $('.select2').change(function() {
- 
-            //選択したvalue値を変数に格納
-            var val = $(this).val();
-         
-            //選択したvalue値をp要素に出力
-            $('#selectlabe2').text(val);
-            $(this).val("月");
+
+            var val2 = $(this).val();
+            document.form.submit();
+            
          });
+        
     });
+   
 </script>

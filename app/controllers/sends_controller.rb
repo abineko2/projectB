@@ -1,12 +1,12 @@
 class SendsController < ApplicationController
-  
+  before_action :number_control
   def update
      send_parameter.each do |id,item|
       if item[:box].to_i==1
          send=Send.find(id)
          @superior=User.find_by(name:send.superior)
          if @superior
-             @notice=Notice.find @superior.id
+             @notice=Notice.find_by(user_id:@superior.id)
              num=@notice.one_month_num
              
              send.update_attributes(item)

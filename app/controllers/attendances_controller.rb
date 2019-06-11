@@ -2,6 +2,7 @@ class AttendancesController < ApplicationController
     before_action :page_block,only:[:edit,:update]
     before_action :startLogin
     before_action :pages_block,only:[:goToWork]
+    before_action :number_control
     
     def create       #出退勤時間表示
     
@@ -33,16 +34,22 @@ class AttendancesController < ApplicationController
         if attendances2_invalid?
             parameter.each do |id,item|
                 attendance=Attendance.find(id)
-                @superior=User.find_by(name: item[:sperior])
-                @notice=Notice.find @superior.id if @superior
-                num=@notice.edit_num+1 
-                @notice.edit_num=num
-                @notice.save
+                unless item[:sperior].blank?
+                    user=User.find_by(name:item[:sperior])
+                    @notice=Notice.find_by(user_id: user.id)
+                    num=@notice.edit_num
+                    num+=1
+                    @notice.edit_num=num
+                    @notice.save
+                    attendance.update_attributes(item)
+                end
+                if (attendance.result=="承認" || attendance.result=="否認"&&!(attendance.new_start==item[:new_start]))
+                    attendance.result=""
+                    attendance.save
+                end 
                
-                attendance.update_attributes(item)
-               
-                
             end
+                 
             flash[:success]="編集しました"
             redirect_to user_url(@user,params:{first_day:params[:date]})
         else
@@ -67,7 +74,16 @@ class AttendancesController < ApplicationController
         
     end
     def logview
+        @first_day=Date.parse(params[:date])
+        @last_day=@first_day.end_of_month
         @attendance=Attendance.new
+        @user=User.find(params[:id])
+        @attendances=@user.attendances.where(result:"承認")
+        if request.post?
+            @attends=@attendances.where(month:params[:month],year:params[:year])
+        
+        end    
+
     end
     
     def box
@@ -75,7 +91,7 @@ class AttendancesController < ApplicationController
         @user=User.find(params[:id])
         @attendances=Attendance.where(sperior:@user.name)
         @attendances.each do |att|
-            if att.result==nil
+            if att.result=="申請中" ||att.result=="" || att.result=="なし"
               names << att.user.name
             end
         end            
@@ -83,34 +99,29 @@ class AttendancesController < ApplicationController
         
     end              #勤怠申請確認
     def confirmation
-         
-         if attendances2_invalid?
-            parameter.each do |id,item|
-                attendance=Attendance.find(id)
-                if item[:result]=="承認" || item[:result]=="否認"
-                    @superior=User.find_by(name: item[:sperior])
-                    @notice=Notice.find @superior.id if @superior
-                    num=@notice.edit_num.to_i if @notice
-                    
-                    num=num-1
-                    @notice.edit_num=num
-                    @notice.save
-                end
-                
-                attendance.update_attributes(item)
-               
-            end
-            flash[:success]="編集しました"
-            redirect_to root_url
-            
-         else
-            flash[:danger]="編集失敗しました"
-            redirect_to edit_attendances_path(@user,params[:date])
-         end 
+       @user=User.find(params[:id])   
+       notice=Notice.find_by(user_id:@user.id) 
+       num=notice.edit_num
+       
+      parameter.each do |id,item|
+          if item[:box].to_i==1
+              attendance=Attendance.find(id)
+              attendance.update_attributes(item)
+              
+          end 
+           
+      end
+      attendances=Attendance.where(box:true,sperior:@user.name,result:"承認"||"否認")
+      num-=attendances.count
+     
+      notice.edit_num=num
+      notice.save
+      redirect_to root_url
     end   
+    
 private
    def parameter
-      params.permit(attendances:[:first_day,:worked_on,:start_at,:finished_at,:new_start,:new_finish,:box,:note,:sperior,:result])[:attendances] 
+      params.permit(attendances:[:first_day,:worked_on,:center_s,:center_f,:new_start,:new_finish,:box,:note,:sperior,:result,:year,:month])[:attendances] 
    end
    def page_block
        @user=User.find(params[:id])

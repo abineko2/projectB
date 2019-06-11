@@ -5,7 +5,8 @@ class UsersController < ApplicationController
   before_action :admin_user,only:[:index]
   before_action :page_block,only:[:show]
   before_action :startLogin
- 
+  before_action :admin_close,only:[:show,:edit,:update]
+  before_action :number_control
   
   
   def index    #一覧
@@ -79,7 +80,7 @@ class UsersController < ApplicationController
   def show  #勤怠ページ
     @user = User.find(params[:id])
     @send=Send.new
-    @notice=Notice.find @user.id if @user.superior?
+    @notice=Notice.find_by(user_id:@user.id) if @user.superior?
     if params[:first_day].nil?
         @first_day=Date.today.beginning_of_month     
     else
@@ -93,7 +94,7 @@ class UsersController < ApplicationController
       end
     end  
     @dates=setDate
-    @count=@dates.where.not(start_at:nil).count
+    @count=@dates.where.not(start_at:nil).count+@dates.where.not(new_start:nil).count
     respond_to do |format|
       format.html do
          
@@ -134,20 +135,23 @@ class UsersController < ApplicationController
   
   
   def sendcreate
-    @send=Send.new(send_parameter)
-    @superior=User.find_by(name:@send.superior)
-    if @superior
-      @notice=Notice.find @superior.id 
-      integer=@notice.one_month_num
-      integer+=1
-      @notice.one_month_num=integer
-      @notice.save
+    sendCount=Send.where(month:send_parameter[:month],conf:"申告中"||"なし").count
+    if sendCount==0
+      @send=Send.new(send_parameter)
+      @superior=User.find_by(name:@send.superior)
+      if @superior
+        @notice=Notice.find_by(user_id:@superior.id) 
+        integer=@notice.one_month_num
+        integer+=1
+        @notice.one_month_num=integer
+        @notice.save
+      end
+      if @send.save
+        redirect_to root_url
+      else  
+        render :show
+      end  
     end
-    if @send.save
-      redirect_to root_url
-    else  
-      render :show
-    end  
   end
   
 private
@@ -193,6 +197,10 @@ private
          end     
        end    
          
+  end
+  
+  def admin_close
+    redirect_to root_url if current_user.admin?
   end
  
 end

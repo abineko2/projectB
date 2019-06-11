@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
    before_action :startLogin
+   before_action :number_control
    
   def new  #ログインページ
   

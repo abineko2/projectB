@@ -31,9 +31,6 @@
 <% if @user.superior?%>
   <div id="admin_info">
       <% sends=Send.where(superior:@user.name) %>
-      <% attendances=Attendance.where(sperior:@user.name,result:nil).count %>
-      <% @notice.edit_num=attendances %>
-      <% @notice.save %>
       <%　over_times=Send2.where(sperior:@user.name).count %>
        <% count=sends.count %>
      
@@ -62,7 +59,7 @@
     <ul style="list_style:none;">
         <li style="display:inline;"><%=link_to "勤怠を編集",edit_attendances_path(@user,@first_day),class:"btn btn-primary" %></li>
         <li style="display:inline;"><%= link_to "CSV出力", user_path(@user, params:{first_day: @first_day },format: :csv), class: "btn btn-primary" %></li>
-        <li style="display:block;"><%=link_to "勤怠修正ログ(承認済)",logview_path,class:"btn btn-primary" %></li>
+        <li style="display:block;"><%=link_to "勤怠修正ログ(承認済)",logview_path(@user,@first_day),class:"btn btn-primary" %></li>
     </ul>
     <% end %>
 </div>
@@ -176,9 +173,9 @@
                   </td>
                   <td>
                      
-                      <% if day.start_at.present? && day.finished_at.present? %>
-                        <%=working_time(day.finished_at,day.start_at) %>
-                        <% num=(day.finished_at-day.start_at).to_i %>
+                      <% if day.new_start.present? && day.new_finish.present? %>
+                        <%=working_time(day.new_finish,day.new_start) %>
+                        <% num=(day.new_finish-day.new_start).to_i %>
                         <% @total=@total.to_i+num %>
                       <% end %>
                   </td>
@@ -191,7 +188,7 @@
                       <td><%=send.overtime.present? ? send.overtime : over_calc(send.new_finish,@user.designated_work_end_time) if send.present?  %></td>
                       <td><%=send.note if send.present? %></td>
                   <!--/残業処理--> 
-                  <% over=@user.send2s.find_by(worked_on:day.worked_on) %>
+                  <% over=@user.send2s.where(worked_on:day.worked_on).last %>
                   <td>
                        <% if day.present? %>
                         <% if day.result=="承認" %>
@@ -228,10 +225,15 @@
                     <% obj=@user.sends.where(month:@first_day.to_s(:month)).last  %>
                     
                     <% if obj.present? %>
-                        <% if obj.conf=="承認" || obj.conf=="否認" %>
+                        <% if obj.conf=="承認" %>
                              <label>所属長承認 <%="#{obj.superior}から#{obj.conf}済" if obj.present?  %></label>
                              <style>#lbb{display:none;}</style>
-                             
+                        <% elsif obj.conf=="否認"  %>   
+                             <label>所属長承認 <%="#{obj.superior}から#{obj.conf}" if obj.present?  %></label>
+                             <style>#lbb{display:none;}</style>
+                         <% elsif obj.conf=="申告中"  %>   
+                             <label>所属長承認 <%="#{obj.superior}へ#{obj.conf}" if obj.present?  %></label>
+                             <style>#lbb{display:none;}</style>     
                         <% end %>
                     <% end %>    
                      <label id="lbb">所属長承認 未定 </label>

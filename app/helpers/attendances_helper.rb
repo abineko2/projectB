@@ -76,4 +76,24 @@ module AttendancesHelper
     def timeCustom(hour,min)
         format("%.2f",(hour*60+min)/60.0)
     end
+    #=============logview=================
+    def year_list
+        @year_list=[["年▼","年"]]
+        @attendances.each do |day|
+            @year_list << [day.worked_on.to_s(:year),day.worked_on.to_s(:year)]
+            
+        end 
+        @year_lists=@year_list.uniq
+        return @year_lists
+        
+    end
+    def month_list
+        @month_list=[["月▼","月"]]
+         @attendances.each do |day|
+            @month_list << [day.worked_on.to_s(:months),day.worked_on.to_s(:months)]
+            
+        end 
+        @month_lists=@month_list.uniq
+        return @month_lists
+    end
 end

@@ -15,10 +15,16 @@ Rails.application.routes.draw do
   patch 'users/update2/:id',to:'users#update2',as: :update2
   get 'users/:id/attendances/:date/edit',to:'attendances#edit',as: :edit_attendances
   patch 'users/:id/attendances/:date/update',to:'attendances#update',as: :update_attendances
-  get 'logview',to:'attendances#logview'
+  post 'logview/:id/:date',to:"attendances#logview",as: :logviews
+  
+  get 'logview/:id/:date',to:'attendances#logview',as: :logview
+  get 'data/:val/:val2',to:'attendances#data'
+  post 'data',to:'attendances#data'
+  
+  
   get 'user/attendance/box/:id',to:'attendances#box',as: :user_attendance_box
   get 'users/:id/box2/:date',to:'users#box2',as: :over_time
-  patch 'user/attendances/confirmation/',to:'attendances#confirmation',as: :attendances_confirmation
+  patch 'user/attendances/confirmation/:id',to:'attendances#confirmation',as: :attendances_confirmation
   post 'over_time_new/:id',to:'send2s#content',as: :over_time_new
   get 'over_time_box3/:id',to:'send2s#box3',as: :over_time_box3
   patch 'over_time_update/:id',to:'send2s#update',as: :over_time_update
@@ -32,6 +38,8 @@ Rails.application.routes.draw do
    post 'usersearch',to:'users#index'
    
    get 'box/:id',to:'users#box',as: :box
+   
+   
   resources :users do
     resources :attendances,only: :create
     post :import,on: :collection
