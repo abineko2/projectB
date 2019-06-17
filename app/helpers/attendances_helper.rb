@@ -45,19 +45,21 @@ module AttendancesHelper
         attend=true
         parameter.each do |id,item|
             attendance=Attendance.find(id)
+           
             day=Date.today
             
             if item[:new_start].blank? && item[:new_finish].blank?
                 next
             elsif item[:new_start].blank? || item[:new_finish].blank?
-               attend=false
+               attend=false unless item[:sperior]=="" || item[:sperior]==nil
                break
             elsif item[:new_start] > item[:new_finish]
-                attend=false
+                attend=false   unless item[:sperior]=="" || item[:sperior]==nil
                 break
             elsif attendance.worked_on>day
-                 attend=false
+                 attend=false unless item[:sperior]=="" || item[:sperior]==nil
                 break        
+           
             end
             
             

@@ -9,7 +9,7 @@
                    
         </div>
          <div class="modal-body">
-             <%=form_for(@user,url:attendances_confirmation_path,method: :patch) do |f| %>
+             <%=form_for(@user,url:attendances_confirmation_path(@user,@first_day),method: :patch) do |f| %>
              <div style="text-align:center">
                   <% @names.each do |a| %>
                   <% user=User.find_by(name:a) %>

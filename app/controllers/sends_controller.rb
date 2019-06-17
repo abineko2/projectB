@@ -1,6 +1,8 @@
 class SendsController < ApplicationController
   before_action :number_control
   def update
+      @user=User.find(params[:id])
+      @first_day=params[:date].to_date
      send_parameter.each do |id,item|
       if item[:box].to_i==1
          send=Send.find(id)
@@ -19,7 +21,7 @@ class SendsController < ApplicationController
       end
      end   
      
-    redirect_to root_url
+    redirect_to user_url(@user,params:{first_day:@first_day})
   end
   
   private

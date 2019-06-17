@@ -3,6 +3,7 @@ class AttendancesController < ApplicationController
     before_action :startLogin
     before_action :pages_block,only:[:goToWork]
     before_action :number_control
+    before_action :admin_close,only:[:edit,:update]
     
     def create       #出退勤時間表示
     
@@ -31,25 +32,21 @@ class AttendancesController < ApplicationController
         
         @user=User.find(params[:id])
         
+        
         if attendances2_invalid?
             parameter.each do |id,item|
+            
                 attendance=Attendance.find(id)
-                unless item[:sperior].blank?
-                    user=User.find_by(name:item[:sperior])
-                    @notice=Notice.find_by(user_id: user.id)
-                    num=@notice.edit_num
-                    num+=1
-                    @notice.edit_num=num
-                    @notice.save
-                    attendance.update_attributes(item)
-                end
+                attendance.update_attributes(item)
+                
+                 
                 if (attendance.result=="承認" || attendance.result=="否認"&&!(attendance.new_start==item[:new_start]))
                     attendance.result=""
                     attendance.save
                 end 
                
             end
-                 
+            
             flash[:success]="編集しました"
             redirect_to user_url(@user,params:{first_day:params[:date]})
         else
@@ -89,34 +86,38 @@ class AttendancesController < ApplicationController
     def box
         names=[]
         @user=User.find(params[:id])
+        @first_day=params[:date].to_date
         @attendances=Attendance.where(sperior:@user.name)
         @attendances.each do |att|
-            if att.result=="申請中" ||att.result=="" || att.result=="なし"
+            if att.result=="申請中" ||att.result=="" || att.result=="なし" || att.result.nil?
               names << att.user.name
             end
         end            
+        
         @names=names.uniq
         
     end              #勤怠申請確認
     def confirmation
        @user=User.find(params[:id])   
+       @first_day=params[:date].to_date
        notice=Notice.find_by(user_id:@user.id) 
        num=notice.edit_num
        
       parameter.each do |id,item|
           if item[:box].to_i==1
               attendance=Attendance.find(id)
-              attendance.update_attributes(item)
-              
+               attendance.update_attributes(item)
+              if item[:result]=="承認" || item[:result]=="否認"
+                 num-=1
+                 notice.edit_num=num
+                 notice.save
+                
+              end
+             
           end 
            
       end
-      attendances=Attendance.where(box:true,sperior:@user.name,result:"承認"||"否認")
-      num-=attendances.count
-     
-      notice.edit_num=num
-      notice.save
-      redirect_to root_url
+      redirect_to user_url(@user,params:{first_day:@first_day})
     end   
     
 private
@@ -133,10 +134,14 @@ private
        
        if login?
          if !current_user.admin? 
+            flash[:danger]="管理者以外アクセスできません"
            redirect_to root_url  
          end     
        end    
    end
+  def admin_close
+    redirect_to root_url if current_user.admin?
+  end
  
     
 end

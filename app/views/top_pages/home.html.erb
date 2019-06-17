@@ -3,12 +3,22 @@
 <% if current_user.nil? %>
 <div class="top_page_area">
     <h1>勤怠システム</h1>
-    <div class="login_button"><%=link_to "ログイン",login_path,class:"btn btn-primary" %></div>
-    <%=link_to "アカウントの作成はこちらから",new_user_path %>
+    <div class="login_button"><%=link_to "ログイン",login_path,class:"btn btn-primary btn-lg",id:"top-bt" %></div>
+    <div style="font-size:30px;"><%=link_to "アカウントの作成はこちらから",new_user_path %></div>
 </div>
 <% else %>
-  <div style="text-align:center;margin-top:50px;">
-       <h3 style="color:orange;font-weight:bold;font-size:38px;">お疲れ様です。今日も頑張りましょう。</h3>
-  </div>
+  <div class="top_page_area">
+    <h1>勤怠システム</h1>
+    <div style="text-align:center;margin-top:50px;margin-bottom:120px;"><br><br><br>
+      <div class="row">
+        <% if !current_user.admin %>
+        <div class="col-md-6"><%=link_to "#{current_user.name}さん勤怠表示",current_user,class:"btn btn-primary btn-lg btn-block" unless current_user.admin? %></div>
+        <div class="col-md-6"><%=link_to "#{current_user.name}さん設定",edit_user_path(current_user),class:"btn btn-primary btn-lg btn-block" unless current_user.admin? %></div>
+        <% end %>
+      </div>
+      </div>
+    </div>
+</div>
+  
  
 <% end %>

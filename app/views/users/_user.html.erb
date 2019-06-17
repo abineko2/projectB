@@ -4,6 +4,7 @@
         <label><%=user.name %></label><br>
         <% if current_user.admin? && !current_user?(user) %>
         |<%=link_to "削除",user,method: :delete,data:{confirm:"削除しますか？"},class:"btn btn-primary"  %><br>
+        <% end %>
         <dl id="edit_user" style="border:1px solid #c0c0c0;
                width:980px;
                background-color:#f0f0f0;
@@ -18,8 +19,6 @@
             <dd style="display:none;background-color:#fff;width:100%;">
                   <%=render 'form2' %>
             </dd>
-
-        <% end %>
       </dl>
     <div class="list_info">
        

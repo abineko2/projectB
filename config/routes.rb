@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  patch 'sends/update',to:'sends#update'
+  patch 'sends/update/:id/:date',to:'sends#update',as: :sends_update
 
    resources :bases
 
@@ -22,22 +22,22 @@ Rails.application.routes.draw do
   post 'data',to:'attendances#data'
   
   
-  get 'user/attendance/box/:id',to:'attendances#box',as: :user_attendance_box
-  get 'users/:id/box2/:date',to:'users#box2',as: :over_time
-  patch 'user/attendances/confirmation/:id',to:'attendances#confirmation',as: :attendances_confirmation
-  post 'over_time_new/:id',to:'send2s#content',as: :over_time_new
-  get 'over_time_box3/:id',to:'send2s#box3',as: :over_time_box3
-  patch 'over_time_update/:id',to:'send2s#update',as: :over_time_update
+  get 'user/attendance/box/:id/:date',to:'attendances#box',as: :user_attendance_box
+  get 'users/:id/box2/:date/:user_id',to:'users#box2',as: :over_time
+  patch 'user/attendances/confirmation/:id/:date',to:'attendances#confirmation',as: :attendances_confirmation
+  patch 'over_time_new/:id/:user_id',to:'send2s#content',as: :over_time_new
+  get 'over_time_box3/:id/:date',to:'send2s#box3',as: :over_time_box3
+  patch 'over_time_update/:id/:date',to:'send2s#update',as: :over_time_update
   
   get 'goToWork',to:'attendances#goToWork'
   get 'baseInfo',to: 'attendances#baseInfo'
   post 'baseInfo',to: 'attendances#basenew'
-  post 'sendcreate',to:'users#sendcreate'
+  patch 'sendcreate/:id/:date',to:'users#sendcreate',as: :sendcreate
   
    get 'usersearch',to:'users#index'
    post 'usersearch',to:'users#index'
    
-   get 'box/:id',to:'users#box',as: :box
+   get 'box/:id/:date',to:'users#box',as: :box
    
    
   resources :users do

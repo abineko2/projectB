@@ -53,6 +53,7 @@ private
        
        if login?
          if !current_user.admin? 
+              flash[:danger]="管理者以外アクセスできません"
            redirect_to root_url  
          end     
        end    

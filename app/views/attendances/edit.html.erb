@@ -35,12 +35,12 @@
                   <td><%=af.check_box :box,{:checked=>false} %></td>
                   <%=af.hidden_field :user_id,value:@user.id %>
                   <td>
-                      <% if day.center_s.present? && day.center_f.present? %>
-                        <%=working_time(day.center_f,day.center_s) %>
+                      <% if day.new_finish.present? && day.new_start.present? %>
+                        <%=working_time(day.new_finish,day.new_start) %>
                       <% end %>
                   </td>
                   <td><%=af.text_field :note %></td>
-                  <td><%=af.select :sperior,supeiors,{},class:"form-control" %></td>
+                  <td><%=af.select :sperior,supeiors,{:selected => ""},class:"form-control"%></td>
               </tr>
               <% end %>
             <% end %>

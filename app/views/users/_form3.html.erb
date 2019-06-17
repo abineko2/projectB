@@ -9,7 +9,7 @@
                 </div>
                       <div class="modal-body">
                             
-                      <%=form_for(@user,url:sends_update_path,method: :patch) do |f| %>      
+                      <%=form_for(@user,url:sends_update_path(@user,@first_day),method: :patch) do |f| %>      
                             <div class="field">
                                  <div style="text-align:center">
                         <% @nameArray.each do |name| %>

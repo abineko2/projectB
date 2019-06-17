@@ -1,7 +1,7 @@
 class CreateAttendances < ActiveRecord::Migration[5.1]
   def change
     create_table :attendances do |t|
-      t.string :sperior,default:""
+      t.string :sperior
       t.date :worked_on
       t.datetime :start_at
       t.datetime :finished_at

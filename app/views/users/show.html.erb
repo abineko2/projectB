@@ -33,20 +33,26 @@
       <% sends=Send.where(superior:@user.name) %>
       <%　over_times=Send2.where(sperior:@user.name).count %>
        <% count=sends.count %>
+       
+       <% count=Attendance.where(sperior:@user.name).where.not(result:"否認").where.not(result:"承認").count %>
+       <% notice=Notice.find_by(user_id:@user.id) %>
+       <% notice.edit_num=count %>
+       <% notice.save %>
+       
      
        
        <% if @notice.one_month_num>0  && current_user.superior? %>
-             <h5 style="color:red;">[所属長承認申請のお知らせ]&emsp;&emsp;<%=link_to "#{@notice.one_month_num}件の通知があります",box_path,remote:true,id:"lb" %></h5>
+             <h5 style="color:red;">[所属長承認申請のお知らせ]&emsp;&emsp;<%=link_to "#{@notice.one_month_num}件の通知があります",box_path(@user,@first_day),remote:true,id:"lb" %></h5>
        <% else %>
              <h5>[所属長承認申請のお知らせ]</h5>
       <% end %>     
-      <% if @notice.edit_num>0  && current_user.superior?  %>
-             <h5 style="color:red;">[勤怠変更承認申請のお知らせ]&emsp;&emsp;<%=link_to "#{@notice.edit_num}件の通知があります",user_attendance_box_path,remote:true,id:"lb" %></h5>
+      <% if notice.edit_num>0  && current_user.superior?  %>
+             <h5 style="color:red;">[勤怠変更承認申請のお知らせ]&emsp;&emsp;<%=link_to "#{notice.edit_num}件の通知があります",user_attendance_box_path(@user,@first_day),remote:true,id:"lb" %></h5>
        <% else %>
             <h5>[勤怠変更承認申請のお知らせ]</h5>
       <% end %>     
        <% if @notice.over_time_num>0  && current_user.superior? %>
-             <h5 style="color:red;">[残業申請のお知らせ]&emsp;&emsp;<%=link_to "#{@notice.over_time_num}件の通知があります",over_time_box3_path,remote:true,id:"lb" %></h5>
+             <h5 style="color:red;">[残業申請のお知らせ]&emsp;&emsp;<%=link_to "#{@notice.over_time_num}件の通知があります",over_time_box3_path(@user,@first_day),remote:true,id:"lb" %></h5>
        <% else %>
             <h5>[残業申請のお知らせ]</h5>
       <% end %>     
@@ -65,6 +71,7 @@
 </div>
 </div>
 <div style="margin-top:10px;margin-left:15%;width:70%;">
+    
     <table class="table table-bordered table-condensed table-striped " id="tv">
         <thead>
              <tr>
@@ -104,11 +111,9 @@
         </thead>
         <tbody>
             <% @dates.each do |day| %>
-              <tr>
+            <tr>
                   <% if @link==true %>
-                    <td><%=link_to "残業申請",over_time_path(@user.id,day.worked_on),remote:true,class:"btn btn-primary" %></td>
-                  <% else %>    
-                    <style> #tv{width:930px;}</style>
+                    <td><%=link_to "残業申請",over_time_path(day.id,day.worked_on,@user.id),remote:true,class:"btn btn-primary" %></td>
                   <% end %>
                   <td><%=day.worked_on.to_s(:date) %></td>
                       <% week=%w(日 月 火 水 木 金 土)[day.worked_on.wday] %>
@@ -182,31 +187,35 @@
                   <td><%=day.note %></td>
                   <!--残業関連処理---->
                   <% time= day.worked_on.to_s(:date) %>
-                  <% send=@user.send2s.find_by(time:time) %>
-                      <td><%=day.plans.present? ? "[翌日]"+day.plans.to_s(:hour): send.new_finish.to_s(:hour) if send.present? %></td>
-                      <td><%=day.plans.present? ? "[翌日]"+day.plans.to_s(:min) : send.new_finish.to_s(:min) if send.present? %></td>
-                      <td><%=send.overtime.present? ? send.overtime : over_calc(send.new_finish,@user.designated_work_end_time) if send.present?  %></td>
-                      <td><%=send.note if send.present? %></td>
+                  <% send=@user.attendances.find_by(time:time) %>
+                      <td><%=day.plans.present? ? "[翌日]"+day.plans.to_s(:hour): send.new_finish2.to_s(:hour) if send.present? %></td>
+                      <td><%=day.plans.present? ? "[翌日]"+day.plans.to_s(:min) : send.new_finish2.to_s(:min) if send.present? %></td>
+                      <td><%=send.overtime.present? ? send.overtime : over_calc(send.new_finish2,@user.designated_work_end_time) if send.present?  %></td>
+                      <td><%=send.note2 if send.present? %></td>
                   <!--/残業処理--> 
-                  <% over=@user.send2s.where(worked_on:day.worked_on).last %>
+                  <% over=@user.attendances.where(worked_on:day.worked_on).last %>
                   <td>
                        <% if day.present? %>
                         <% if day.result=="承認" %>
                           <p style="color:blue"><%="勤怠申請:#{day.sperior}により承認済み" %></p>
                         <% elsif  day.result=="否認" %>
                            <p style="color:red"><%="勤怠申請:#{day.sperior}により否認済み" %></p>
-                        <% else %>   
+                        <% else day.result=="申告中"||"" %>   
                            <p><%="勤怠申請:#{day.sperior}に申告中" if day.sperior.present? %></p>
+
                         <% end %>
                       <% end %>
                       
                       <% if over.present? %>
                         <% if over.answer=="承認" %>
-                          <p style="color:blue;"><%="残業申請:#{over.sperior}により承認済み" %></p>
+                          <p style="color:blue;"><%="残業申請:#{over.sperior2}により承認済み" %></p>
                         <% elsif  over.answer=="否認" %>
-                           <p style="color:red;"><%="残業申請:#{over.sperior}により否認済み" %></p>
-                        <% else  %>   
-                           <p><%="残業申請:#{over.sperior}に申告中" %></p>
+                           <p style="color:red;"><%="残業申請:#{over.sperior2}により否認済み" %></p>
+                         <% elsif  over.answer=="申告中" %>
+                           <p style=><%="残業申請:#{over.sperior2}に申告中" %></p>       
+                        
+                        <% elsif over.sperior2=="" %>
+                           <p></p>
                         <% end %>
                       <% end %>
                  </td>
@@ -222,7 +231,7 @@
                 <td colspan="6"></td>
                 <% if @link==true %>
                 <td>
-                    <% obj=@user.sends.where(month:@first_day.to_s(:month)).last  %>
+                    <% obj=@user.sends.find_by(month:@first_day.to_s(:month))  %>
                     
                     <% if obj.present? %>
                         <% if obj.conf=="承認" %>
@@ -231,17 +240,19 @@
                         <% elsif obj.conf=="否認"  %>   
                              <label>所属長承認 <%="#{obj.superior}から#{obj.conf}" if obj.present?  %></label>
                              <style>#lbb{display:none;}</style>
-                         <% elsif obj.conf=="申告中"  %>   
-                             <label>所属長承認 <%="#{obj.superior}へ#{obj.conf}" if obj.present?  %></label>
+                         <% elsif obj.conf=="申告中"%>   
+                             <label>所属長承認 <%="#{obj.superior}へ申請" if obj.present?  %></label>
                              <style>#lbb{display:none;}</style>     
                         <% end %>
                     <% end %>    
                      <label id="lbb">所属長承認 未定 </label>
-                    <%=form_for(@send,url:sendcreate_path)  do |f| %>
+                    <%=form_for(@send,url:sendcreate_path(@user.id,@first_day),method: :patch)  do |f| %>
                        <%=f.select :superior,supeiors,{},class:"form-control" %>
                         <%=f.hidden_field :tm,value:@first_day %>
                        <%=f.hidden_field :month,value:@first_day.to_s(:month) %>
                        <%=f.hidden_field :user_id,value:@user.id %>
+                       <%=f.hidden_field :link,value:true %>
+                       <%=f.hidden_field :conf,value:"申告中" %>
                        <%=f.submit "申請", class:"btn bt-sm btn-primary" %>
                     <% end %>
                 </td>

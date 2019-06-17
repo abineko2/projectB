@@ -17,12 +17,15 @@
            <%=form.label "社員番号" %>
            <%=form.number_field :employee_number,class:"form-control" %>
            
-           <%=form.label "カードID" %>
+           <%=form.label "カード番号" %>
            <%=form.text_field :uid,class:"form-control" %>
            
            
            <%=form.label "パスワード" %>
            <%=form.password_field :password,class:"form-control" %>
+           
+           <%=form.label "パスワード確認" %>
+           <%=form.password_field :password_confirmation,class:"form-control" %>
            
            
            <%=form.label "指定勤務開始時間" %>

@@ -13,7 +13,7 @@
 ActiveRecord::Schema.define(version: 20190604133722) do
 
   create_table "attendances", force: :cascade do |t|
-    t.string "sperior", default: ""
+    t.string "sperior"
     t.date "worked_on"
     t.datetime "start_at"
     t.datetime "finished_at"
@@ -31,6 +31,15 @@ ActiveRecord::Schema.define(version: 20190604133722) do
     t.string "result", default: ""
     t.datetime "center_s"
     t.datetime "center_f"
+    t.string "time"
+    t.string "overtime"
+    t.boolean "box2", default: false
+    t.boolean "box3", default: false
+    t.string "note2"
+    t.string "answer"
+    t.string "sperior2"
+    t.datetime "new_finish2"
+    t.integer "atted_count", default: 0
     t.index ["user_id"], name: "index_attendances_on_user_id"
   end
 
@@ -69,10 +78,11 @@ ActiveRecord::Schema.define(version: 20190604133722) do
   create_table "sends", force: :cascade do |t|
     t.string "superior"
     t.string "month"
+    t.boolean "link", default: true
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "conf"
+    t.string "conf", default: "なし"
     t.datetime "tm"
     t.boolean "box"
     t.index ["user_id"], name: "index_sends_on_user_id"

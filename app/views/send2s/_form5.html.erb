@@ -7,10 +7,10 @@
         </div>
          <div class="modal-body">
             <div style="text-align:center">
-                <%=form_for(@user,url:over_time_update_path,method: :patch) do |f| %>
+                <%=form_for(@user,url:over_time_update_path(@user,@first_day),method: :patch) do |f| %>
                 <% @names.each do |name| %>
                  <% user=User.find_by(name: name) %>
-                 <% sends=user.send2s.where(sperior:@user.name) %>
+                 <% sends=user.attendances.where(sperior2:@user.name) %>
                   <h3><%="[#{name}からの残業申請]" %></h3>
                   <table class="table table-bordered table-condensed table-striped">
                       <thead>
@@ -31,16 +31,16 @@
                          <% sends.each do |send| %>
                          <!--承認、否認以外data表示-->
                           <% if !(send.answer=="承認" || send.answer=="否認") %>
-                          <%=fields_for "send2s[]",send do |af| %>
+                          <%=fields_for "attendances[]",send do |af| %>
                           <tr>
                                 <td><%=send.time %></td>
                                 <td><%=%w(日 月 火 水 木 金 土)[send.worked_on.wday] %></td>
-                                <td><%=send.new_finish.to_s(:time) %></td>
+                                <td><%=send.new_finish2.to_s(:time) %></td>
                                 <td><%=user.designated_work_end_time.to_s(:time) %></td>
-                                <td><%=tim=over_calc(send.new_finish,user.designated_work_end_time) %></td>
+                                <td><%=tim=over_calc(send.new_finish2,user.designated_work_end_time) %></td>
                                 <td><%=send.note %></td>
                                 <td><%=af.select :answer, list_answer,{},class:"form-control" %></td>
-                                <td><%=af.check_box :box,{:checked=>false} %></td>
+                                <td><%=af.check_box :box3,{:checked=>false} %></td>
                                 <td><%=link_to "確認",user_path(user,params:{first_day:send.worked_on,link:@link}),class:"btn btn-primary" %></td>
                                 <%=af.hidden_field :overtime,value:tim %>
                           </tr>

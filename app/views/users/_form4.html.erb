@@ -8,7 +8,7 @@
          <div class="modal-body">
              <div style="text-align:center">
                    <h3>[残業申請]</h3>
-                   <%=form_for(@send2,url:over_time_new_path) do |f| %>
+                   <%=form_for(@send2,url:over_time_new_path(@send2.id,@user.id),method: :patch) do |f| %>
                    <table class="table table-bordered table-condensed table-striped">
                        <thread>
                            <tr>
@@ -26,10 +26,11 @@
                                <td><%=@day %></td>
                                 <%=f.hidden_field :worked_on,value:@worked_on %>
                                 <%=f.hidden_field :time,value:@date %>
-                               <td><%=f.time_field :new_finish,class:"form-control" %></td>
-                               <td><%=f.check_box :box,{:checked=>false} %></td>
-                               <td><%=f.text_field :note,class:"form-control" %></td>
-                               <td><%=f.select :sperior,supeiors,{},class:"form-control" %></td>
+                                <%=f.hidden_field :answer,value:"申告中" %>
+                               <td><%=f.time_field :new_finish2,class:"form-control" %></td>
+                               <td><%=f.check_box :box2,{:checked=>false} %></td>
+                               <td><%=f.text_field :note2,class:"form-control" %></td>
+                               <td><%=f.select :sperior2,supeiors,{},class:"form-control" %></td>
                            </tr>
                        </tbody>
                    </table>
