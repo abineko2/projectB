@@ -127,6 +127,7 @@ class UsersController < ApplicationController
       @link=params[:link]
     end  
   end
+  #======1ヶ月申請モーダル=======
   def box
     @user=User.find(params[:id])
     @sends=Send.where(superior:@user.name)
@@ -134,11 +135,13 @@ class UsersController < ApplicationController
   
      array=[]
      @sends.each do |send|
-       if send.conf=="申請中" || send.conf=="なし" || send.conf==nil || send.conf=""
+       unless send.conf=="承認" || send.conf=="否認"
+         
          array << send.user.name
        end
      end   
      @nameArray=array.uniq
+     
   end
   
   def box2
@@ -162,16 +165,17 @@ class UsersController < ApplicationController
     
     unless send_parameter[:superior]=="" || send_parameter[:superior]==nil
       if @send.conf=="承認" || @send.conf=="否認"
-        @send.conf="申告中"
+        @send.conf=""
         @send.save
       end 
        if 
           @send.update_attributes(send_parameter)
-          send_num=Send.where(superior:send_parameter[:superior]).count
+          send_num=Send.where(superior:send_parameter[:superior]).where.not(conf:"否認").where.not(conf:"承認").count
         
           @sp=User.find_by(name:send_parameter[:superior])  
           @notice=Notice.find_by(user_id:@sp.id)
           @notice.one_month_num=send_num
+        
           @notice.save
           flash[:success] = "所属長申請しました"
           redirect_to user_url(@user,params:{first_day:@first_day})

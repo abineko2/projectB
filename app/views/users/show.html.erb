@@ -188,8 +188,8 @@
                   <!--残業関連処理---->
                   <% time= day.worked_on.to_s(:date) %>
                   <% send=@user.attendances.find_by(time:time) %>
-                      <td><%=day.plans.present? ? "[翌日]"+day.plans.to_s(:hour): send.new_finish2.to_s(:hour) if send.present? %></td>
-                      <td><%=day.plans.present? ? "[翌日]"+day.plans.to_s(:min) : send.new_finish2.to_s(:min) if send.present? %></td>
+                      <td><%=send.new_finish2.to_s(:hour) if send.present? %></td>
+                      <td><%=send.new_finish2.to_s(:min) if send.present? %></td>
                       <td><%=send.overtime.present? ? send.overtime : over_calc(send.new_finish2,@user.designated_work_end_time) if send.present?  %></td>
                       <td><%=send.note2 if send.present? %></td>
                   <!--/残業処理--> 

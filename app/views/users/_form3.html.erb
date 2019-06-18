@@ -16,6 +16,7 @@
                           <h3><%="[#{name}から一ヶ月勤怠申請]" %></h3>
                           <% us=User.find_by(name: name) %>
                           <% sends=Send.where(user_id: us.id) %>
+                          <%=sen=Send.find_by(user_id:29).user.name %>
                           <table class="table table-bordered table-condensed table-striped">
                               <thead>
                                   <tr>

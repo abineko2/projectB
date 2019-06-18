@@ -6,13 +6,10 @@ class SendsController < ApplicationController
      send_parameter.each do |id,item|
       if item[:box].to_i==1
          send=Send.find(id)
-         @superior=User.find_by(name:send.superior)
-         if @superior
-             @notice=Notice.find_by(user_id:@superior.id)
-             num=@notice.one_month_num
-             
-             send.update_attributes(item)
-         end
+         @notice=Notice.find_by(user_id:@user.id)
+         num=@notice.one_month_num
+         send.update_attributes(item)
+        
          if send.conf=="承認" || send.conf=="否認"
              num-=1
              @notice.one_month_num=num
