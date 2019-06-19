@@ -4,46 +4,48 @@ class Send2sController < ApplicationController  #残業申請アクション
   end
 
   def content  #残業申請フォーム作成
-    
-    @superior=User.find_by(name:send2_parameter[:sperior2])
-    @notice=Notice.find_by(user_id:@superior.id)
-    @user=User.find(params[:user_id])
-    @first_day=send2_parameter[:worked_on].to_date.beginning_of_month
-    
-    num=@notice.over_time_num
-    count=Attendance.where(sperior2:@superior.name,answer:"申告中").count
-    num=count+1
-    @notice.over_time_num=num
-    @notice.save
-    
-    if request.patch?
-      @send2=Attendance.find(params[:id])
-      
-      if send2_parameter[:box2].to_i==1
-        date=send2_parameter[:worked_on]
-        tomorrow=date.to_date+1
+     @user=User.find(params[:user_id])
+    unless send2_parameter[:sperior2]==""
+        @superior=User.find_by(name:send2_parameter[:sperior2])
+        @notice=Notice.find_by(user_id:@superior.id) if @superior.present?
+        @first_day=send2_parameter[:worked_on].to_date.beginning_of_month
         
-        @send2.update_attributes(send2_parameter)
-        @send2.time=tomorrow.to_s(:date)
-        @send2.worked_on=tomorrow
-        @send2.save
+        num=@notice.over_time_num
+        count=Attendance.where(sperior2:@superior.name,answer:"申告中").count
+        num=count+1
+        @notice.over_time_num=num
+        @notice.save
         
-        send3=Attendance.find(params[:id].to_i+1)
-        send3.destroy
-        flash[:info] = "申請したのは翌日です"
-        redirect_to user_url(@user.id,params:{first_day:@first_day})
-      else
-        @send2.update_attributes(send2_parameter)
-        flash[:success] = "残業申請しました"
-        redirect_to user_url(@user.id,params:{first_day:@first_day})
-      end
-      
-      if send2_parameter[:sperior2]==""
-        flash[:danger] = "上長を選んでください"
-        redirect_to @user
-      end  
-      
-    end  
+        if request.patch?
+          @send2=Attendance.find(params[:id])
+          
+          if send2_parameter[:box2].to_i==1
+            date=send2_parameter[:worked_on]
+            tomorrow=date.to_date+1
+            
+            @send2.update_attributes(send2_parameter)
+            @send2.time=tomorrow.to_s(:date)
+            @send2.worked_on=tomorrow
+            @send2.save
+            
+            send3=Attendance.find(params[:id].to_i+1)
+            send3.destroy
+            flash[:info] = "申請したのは翌日です"
+            redirect_to user_url(@user.id,params:{first_day:@first_day})
+          else
+            @send2.update_attributes(send2_parameter)
+            flash[:success] = "残業申請しました"
+            redirect_to user_url(@user.id,params:{first_day:@first_day})
+          end
+          
+          
+        end  
+    else
+      flash[:danger] = "上長を選択してください"
+      redirect_to user_url(@user.id,params:{first_day:@first_day})
+    end
+    
+    
     
   end
   def box3
