@@ -5,10 +5,11 @@ class Send2sController < ApplicationController  #残業申請アクション
 
   def content  #残業申請フォーム作成
      @user=User.find(params[:user_id])
+     @first_day=send2_parameter[:worked_on].to_date.beginning_of_month
     unless send2_parameter[:sperior2]==""
         @superior=User.find_by(name:send2_parameter[:sperior2])
         @notice=Notice.find_by(user_id:@superior.id) if @superior.present?
-        @first_day=send2_parameter[:worked_on].to_date.beginning_of_month
+        
         
         num=@notice.over_time_num
         count=Attendance.where(sperior2:@superior.name,answer:"申告中").count
