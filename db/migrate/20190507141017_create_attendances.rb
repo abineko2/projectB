@@ -12,6 +12,8 @@ class CreateAttendances < ActiveRecord::Migration[5.1]
       t.string :note
       t.string :year
       t.string :month
+      t.string :format_new_time
+      t.string :format_finish_time
       t.references :user, foreign_key: true
 
       t.timestamps

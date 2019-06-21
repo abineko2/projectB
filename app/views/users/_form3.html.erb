@@ -15,8 +15,8 @@
                         <% @nameArray.each do |name| %>
                           <h3><%="[#{name}から一ヶ月勤怠申請]" %></h3>
                           <% us=User.find_by(name: name) %>
-                          <% sends=Send.where(user_id: us.id) %>
-                          
+                        
+                          <% sends=Send.where(user_id:us.id,superior:@user.name) %>
                           <table class="table table-bordered table-condensed table-striped">
                               <thead>
                                   <tr>
@@ -29,8 +29,9 @@
                               <tbody>
                                   <% @link=false %>
                                   <% sends.each do |send| %>
+                                   <%=send.superior %>
                                    <!--承認、否認以外data表示-->
-                                   <% if !(send.conf=="承認" || send.conf=="否認") %>
+                                   <% if !(send.conf=="承認" || send.conf=="否認")  %>
                                   <%=fields_for "sends[]",send do |af| %>
                                     <tr>
                                         <td><%=send.month %></td>

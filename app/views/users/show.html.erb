@@ -42,7 +42,7 @@
      
        
        <% if @notice.one_month_num>0  && current_user.superior? %>
-             <h5 style="color:red;">[所属長承認申請のお知らせ]&emsp;&emsp;<%=link_to "#{@notice.one_month_num}件の通知があります",box_path(@user,@first_day),remote:true,id:"lb" %></h5>
+             <h5 style="color:red;">[所属長承認申請のお知らせ]&emsp;&emsp;<%=link_to "#{@notice.one_month_num}件の通知があります",box_path(@user.id,@first_day),remote:true,id:"lb" %></h5>
        <% else %>
              <h5>[所属長承認申請のお知らせ]</h5>
       <% end %>     
@@ -246,11 +246,10 @@
                         <% end %>
                     <% end %>    
                      <label id="lbb">所属長承認 未定 </label>
-                    <%=form_for(@send,url:sendcreate_path(@user.id,@first_day),method: :patch)  do |f| %>
+                    <%=form_for(@send,url:sendcreate_path(@user.id,@first_day,@send.id),method: :patch)  do |f| %>
                        <%=f.select :superior,supeiors,{},class:"form-control" %>
                         <%=f.hidden_field :tm,value:@first_day %>
                        <%=f.hidden_field :month,value:@first_day.to_s(:month) %>
-                       <%=f.hidden_field :user_id,value:@user.id %>
                        <%=f.hidden_field :link,value:true %>
                        <%=f.hidden_field :conf,value:"申告中" %>
                        <%=f.submit "申請", class:"btn bt-sm btn-primary" %>

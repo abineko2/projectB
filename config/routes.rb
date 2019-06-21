@@ -32,7 +32,7 @@ Rails.application.routes.draw do
   get 'goToWork',to:'attendances#goToWork'
   get 'baseInfo',to: 'attendances#baseInfo'
   post 'baseInfo',to: 'attendances#basenew'
-  patch 'sendcreate/:id/:date',to:'users#sendcreate',as: :sendcreate
+  patch 'sendcreate/:id/:date/:send_id',to:'users#sendcreate',as: :sendcreate
   
    get 'usersearch',to:'users#index'
    post 'usersearch',to:'users#index'

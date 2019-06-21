@@ -1,5 +1,6 @@
 require 'csv'
 require 'date'
+require 'time'
 
 
 CSV.generate do |csv|
@@ -8,12 +9,14 @@ CSV.generate do |csv|
   csv <<add_colum
   dates=@user.attendances.where('worked_on>=? and worked_on<=?',@first_day,@last_day).order('worked_on asc')
   dates.each do |day|
-     start=day.start_at.present? ? day.start_at : day.new_start
-     finish=day.finished_at.present? ? day.finished_at : day.new_finish
+     start=day.start_at.present? ? day.start_at : day.format_new_time
+     finish=day.finished_at.present? ? day.finished_at : day.format_finish_time
+     s=day.format_new_time
+     f=day.format_finish_time
      add_value=[
         day.worked_on.to_s(:date),
-        start,
-        finish,
+        s,
+        f,
      ]
      csv << add_value
   end

@@ -79,7 +79,7 @@ class UsersController < ApplicationController
   
   def show  #勤怠ページ
     @user = User.find(params[:id])
-    @send=Send.new
+   
     @notice=Notice.find_by(user_id:@user.id) if @user.superior?
     
     
@@ -89,11 +89,13 @@ class UsersController < ApplicationController
        @first_day=Date.parse(params[:first_day])
     end  
     @last_day=@first_day.end_of_month
-    
+  
     unless  @user.sends.any?{|send| send.month==@first_day.to_s(:month)}
        record=@user.sends.build(month:@first_day.to_s(:month))
        record.save
     end
+    @send=Send.find_by(month:@first_day.to_s(:month),user_id:@user.id)
+    
     (@first_day..@last_day).each do |day|
       unless @user.attendances.any?{|attendance| attendance.worked_on==day}
         record=@user.attendances.build(worked_on:day)
@@ -105,7 +107,7 @@ class UsersController < ApplicationController
       end
        
     end  
-    
+  
     @dates=setDate
     @overs=@user.send2s.where('worked_on>=? and worked_on<=?',@first_day,@last_day).order('worked_on asc')
     @count=@dates.where.not(start_at:nil).count+@dates.where.not(new_start:nil).count
@@ -132,7 +134,7 @@ class UsersController < ApplicationController
     @user=User.find(params[:id])
     @sends=Send.where(superior:@user.name)
     @first_day=params[:date].to_date
-  
+     
      array=[]
      @sends.each do |send|
        unless send.conf=="承認" || send.conf=="否認"
@@ -155,14 +157,14 @@ class UsersController < ApplicationController
   
   #======1ヶ月申請=============
   def sendcreate
+    
     @user=User.find(params[:id])
     if send_parameter[:link]=="true"
         @link=true
     end
     @first_day=params[:date].to_date
     
-    @send=@user.sends.find_by(month:send_parameter[:month])
-    
+    @send=Send.find(params[:send_id])
     unless send_parameter[:superior]=="" || send_parameter[:superior]==nil
       if @send.conf=="承認" || @send.conf=="否認"
         @send.conf=""
@@ -179,6 +181,7 @@ class UsersController < ApplicationController
           @notice.save
           flash[:success] = "所属長申請しました"
           redirect_to user_url(@user,params:{first_day:@first_day})
+          
        else
        
        end  

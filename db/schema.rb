@@ -24,6 +24,8 @@ ActiveRecord::Schema.define(version: 20190604133722) do
     t.string "note"
     t.string "year"
     t.string "month"
+    t.string "format_new_time"
+    t.string "format_finish_time"
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

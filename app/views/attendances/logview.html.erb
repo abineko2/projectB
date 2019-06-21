@@ -43,7 +43,7 @@
                    <td><%=at.new_start.to_s(:time) if at.new_start.present? %></td>
                    <td><%=at.new_finish.to_s(:time) if at.new_finish.present? %></td>
                    <td><%=at.sperior %></td>
-                   <td><%=at.updated_at.to_s(:date) %></td>
+                   <td><%=at.updated_at.strftime("%Y/%m/%d") %></td>
                </tr>
             <% end %>
             <% end %>

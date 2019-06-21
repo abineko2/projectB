@@ -1,4 +1,5 @@
 class AttendancesController < ApplicationController
+
     before_action :page_block,only:[:edit,:update]
     before_action :startLogin
     before_action :pages_block,only:[:goToWork]
@@ -12,9 +13,17 @@ class AttendancesController < ApplicationController
         if @attendance.start_at.nil?
             flash[:info]="頑張りましょう"
             @attendance.update_attributes(start_at:current_time)
+            @attendance.new_start=@attendance.start_at
+            @attendance.year=@attendance.start_at.to_s(:year)
+            @attendance.month=@attendance.start_at.to_s(:months)
+            @attendance.format_new_time=@attendance.start_at.strftime("%H:%M")
+            @attendance.save
         elsif @attendance.finished_at.nil?       
              flash[:info]="お疲れ様です"
             @attendance.update_attributes(finished_at:current_time)
+            @attendance.new_finish=@attendance.finished_at
+            @attendance.format_finish_time=@attendance.finished_at.strftime("%H:%M")
+            @attendance.save
         end
         redirect_to @user
     end  
@@ -38,7 +47,9 @@ class AttendancesController < ApplicationController
             
                 attendance=Attendance.find(id)
                 attendance.update_attributes(item)
-                
+                attendance.format_new_time=item[:new_start]
+                attendance.format_finish_time=item[:new_finish]
+                attendance.save
                  
                 if (attendance.result=="承認" || attendance.result=="否認"&&!(attendance.new_start==item[:new_start]))
                     attendance.result=""
