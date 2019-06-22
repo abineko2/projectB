@@ -56,10 +56,10 @@ module AttendancesHelper
             elsif item[:new_start] > item[:new_finish]
                 attend=false   unless item[:sperior]=="" || item[:sperior]==nil
                 break
-            elsif attendance.worked_on>day
+            elsif attendance.worked_on>=day
                  attend=false unless item[:sperior]=="" || item[:sperior]==nil
                 break        
-           
+               
             end
             
             

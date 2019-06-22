@@ -6,6 +6,8 @@ class Send2sController < ApplicationController  #残業申請アクション
   def content  #残業申請フォーム作成
      @user=User.find(params[:user_id])
      @first_day=send2_parameter[:worked_on].to_date.beginning_of_month
+     @send2=Attendance.find(params[:id])
+    
     unless send2_parameter[:sperior2]==""
         @superior=User.find_by(name:send2_parameter[:sperior2])
         @notice=Notice.find_by(user_id:@superior.id) if @superior.present?
@@ -16,6 +18,15 @@ class Send2sController < ApplicationController  #残業申請アクション
         num=count+1
         @notice.over_time_num=num
         @notice.save
+        
+         unless @send2.sperior2==nil
+           user=User.find_by(name:@send2.sperior2)
+           notice=Notice.find_by(user_id:user.id)
+           
+           num2=notice.over_time_num-1
+           notice.over_time_num=num2
+           notice.save
+         end   
         
         if request.patch?
           @send2=Attendance.find(params[:id])

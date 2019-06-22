@@ -29,7 +29,7 @@
                               <tbody>
                                   <% @link=false %>
                                   <% sends.each do |send| %>
-                                   <%=send.superior %>
+                                   
                                    <!--承認、否認以外data表示-->
                                    <% if !(send.conf=="承認" || send.conf=="否認")  %>
                                   <%=fields_for "sends[]",send do |af| %>

@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :log_in_user,only:[:index,:edit,:update]
   before_action :current_user_check,only:[:edit,:update] 
   before_action :find_user,only:[:edit_basic_info,:updateBasicInfo,:show]
-  before_action :admin_user,only:[:index,:edit_basic_info]
+  before_action :admin_user,only:[:index,:edit_basic_info,:update2,:destroy]
   before_action :page_block,only:[:show]
   before_action :startLogin
   before_action :admin_close,only:[:show,:edit,:update]
@@ -132,7 +132,7 @@ class UsersController < ApplicationController
   #======1ヶ月申請モーダル=======
   def box
     @user=User.find(params[:id])
-    @sends=Send.where(superior:@user.name)
+    @sends=Send.where(superior:@user.name) 
     @first_day=params[:date].to_date
      
      array=[]
@@ -145,7 +145,7 @@ class UsersController < ApplicationController
      @nameArray=array.uniq
      
   end
-  
+  #=======残業申請依頼モーダル用
   def box2
     @send2=Attendance.find(params[:id])
     @user=User.find(params[:user_id])
@@ -165,13 +165,20 @@ class UsersController < ApplicationController
     @first_day=params[:date].to_date
     
     @send=Send.find(params[:send_id])
+    unless @send.superior==nil
+        user=User.find_by(name:@send.superior)
+        notice=Notice.find_by(user_id:user.id)
+        num=notice.one_month_num-1
+        notice.one_month_num=num
+        notice.save
+    end  
     unless send_parameter[:superior]=="" || send_parameter[:superior]==nil
+     
       if @send.conf=="承認" || @send.conf=="否認"
         @send.conf=""
         @send.save
       end 
-       if 
-          @send.update_attributes(send_parameter)
+       if  @send.update_attributes(send_parameter)
           send_num=Send.where(superior:send_parameter[:superior]).where.not(conf:"否認").where.not(conf:"承認").count
         
           @sp=User.find_by(name:send_parameter[:superior])  

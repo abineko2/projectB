@@ -4,7 +4,7 @@ class AttendancesController < ApplicationController
     before_action :startLogin
     before_action :pages_block,only:[:goToWork]
     before_action :number_control
-    before_action :admin_close,only:[:edit,:update]
+    before_action :admin_close,only:[:edit,:update,:create]
     
     def create       #出退勤時間表示
     
@@ -46,11 +46,13 @@ class AttendancesController < ApplicationController
             parameter.each do |id,item|
             
                 attendance=Attendance.find(id)
+               
+                
                 attendance.update_attributes(item)
                 attendance.format_new_time=item[:new_start]
                 attendance.format_finish_time=item[:new_finish]
                 attendance.save
-                 
+               
                 if (attendance.result=="承認" || attendance.result=="否認"&&!(attendance.new_start==item[:new_start]))
                     attendance.result=""
                     attendance.save
@@ -60,6 +62,7 @@ class AttendancesController < ApplicationController
             
             flash[:success]="編集しました"
             redirect_to user_url(@user,params:{first_day:params[:date]})
+                
         else
             flash[:danger]="編集失敗しました"
             redirect_to edit_attendances_path(@user,params[:date])
