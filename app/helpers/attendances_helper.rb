@@ -50,7 +50,7 @@ module AttendancesHelper
             
             if item[:new_start].blank? && item[:new_finish].blank?
                 attend=false unless item[:sperior]=="" || item[:sperior]==nil
-                break
+                next
             elsif item[:new_start].blank? || item[:new_finish].blank?
                attend=false unless item[:sperior]=="" || item[:sperior]==nil
                break
@@ -60,7 +60,9 @@ module AttendancesHelper
             elsif attendance.worked_on>=day
                  attend=false 
                 break        
-               
+            elsif attendance.worked_on==day
+                 attend=false 
+                break         
             end
             
             
