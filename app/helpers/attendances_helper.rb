@@ -58,7 +58,7 @@ module AttendancesHelper
                 attend=false   unless item[:sperior]=="" || item[:sperior]==nil
                 break
             elsif attendance.worked_on>=day
-                 attend=false unless item[:sperior]=="" || item[:sperior]==nil
+                 attend=false 
                 break        
                
             end
