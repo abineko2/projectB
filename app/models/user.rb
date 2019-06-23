@@ -12,8 +12,8 @@ class User < ApplicationRecord
     validates :password,presence:true,length:{maximum:30},allow_nil:true
     validates :affiliation,length:{in: 0..30},allow_blank:true,presence:true
     
-    validates :employee_number, presence: true,uniqueness:true
-    validates :uid, presence: true,uniqueness:true
+    validates :employee_number,uniqueness:true
+    validates :uid,uniqueness:true
     
     def self.import(file)
         CSV.foreach(file.path,headers:true) do |row|
