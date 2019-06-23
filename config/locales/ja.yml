@@ -8,6 +8,8 @@ ja:
         email: メールアドレス
         password: パスワード
         belongs : 所属
+        employee_number : 社員番号
+        uid : カード番号
     
       attendance:
         worked_on: 日にち

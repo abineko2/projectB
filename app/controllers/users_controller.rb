@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :log_in_user,only:[:index,:edit,:update]
   before_action :current_user_check,only:[:edit,:update] 
   before_action :find_user,only:[:edit_basic_info,:updateBasicInfo,:show]
-  before_action :admin_user,only:[:index,:edit_basic_info,:update2,:destroy]
+  before_action :admin_user,only:[:index,:edit_basic_info,:update2,:destroy,:edit2]
   before_action :page_block,only:[:show]
   before_action :startLogin
   before_action :admin_close,only:[:show,:edit,:update]
@@ -56,7 +56,7 @@ class UsersController < ApplicationController
       flash[:success]="編集しました"
       redirect_to users_url
     else
-      render :edit
+      render :edit2
     end  
   end
   
@@ -213,7 +213,7 @@ private
   def log_in_user  #ログインしてるかチェック
      unless login?
        save_url 
-       flash[:dangert] = "ログインしてください"
+       flash[:danger] = "ログインしてください"
        redirect_to login_url
      end  
   end

@@ -41,7 +41,7 @@
                                 <td><%=send.note %></td>
                                 <td><%=af.select :answer, list_answer,{},class:"form-control" %></td>
                                 <td><%=af.check_box :box3,{:checked=>false} %></td>
-                                <td><%=link_to "確認",user_path(user,params:{first_day:send.worked_on,link:@link}),class:"btn btn-primary" %></td>
+                                <td><%=link_to "確認",user_path(user,params:{first_day:@first_day,link:@link}),class:"btn btn-primary" %></td>
                                 <%=af.hidden_field :overtime,value:tim %>
                           </tr>
                           <% end %>

@@ -7,6 +7,20 @@ class Send2sController < ApplicationController  #残業申請アクション
      @user=User.find(params[:user_id])
      @first_day=send2_parameter[:worked_on].to_date.beginning_of_month
      @send2=Attendance.find(params[:id])
+     day=@send2.worked_on.to_s
+     str=day+" #{send2_parameter[:new_finish2]}"
+     datetime=Time.zone.parse(str)
+     #======申請時間分解===
+     hour=datetime.hour
+     min=datetime.min
+     num=hour*60+min
+     
+      #======勤務終了時間分解===
+     hour2=@user.designated_work_end_time.hour
+     min2=@user.designated_work_end_time.min
+     num2=hour2*60+min2
+     sum=num.to_i-num2.to_i
+     
     
     unless send2_parameter[:sperior2]==""
         @superior=User.find_by(name:send2_parameter[:sperior2])
@@ -45,9 +59,19 @@ class Send2sController < ApplicationController  #残業申請アクション
             flash[:info] = "申請したのは翌日です"
             redirect_to user_url(@user.id,params:{first_day:@first_day})
           else
-            @send2.update_attributes(send2_parameter)
-            flash[:success] = "残業申請しました"
-            redirect_to user_url(@user.id,params:{first_day:@first_day})
+              if send2_parameter[:new_finish2].blank?
+                 flash[:danger] = "終了予定時間入力ください"
+                 redirect_to user_url(@user.id,params:{first_day:@first_day})
+              elsif sum<=0
+                  
+                 flash[:danger] = "申請したのは勤務時間内です"
+                 redirect_to user_url(@user.id,params:{first_day:@first_day})
+              else
+                 @send2.update_attributes(send2_parameter)
+                 flash[:success] = "残業申請しました"
+                 redirect_to user_url(@user.id,params:{first_day:@first_day})
+              end  
+           
           end
           
           

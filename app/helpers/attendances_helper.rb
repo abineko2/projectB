@@ -49,7 +49,8 @@ module AttendancesHelper
             day=Date.today
             
             if item[:new_start].blank? && item[:new_finish].blank?
-                next
+                attend=false unless item[:sperior]=="" || item[:sperior]==nil
+                break
             elsif item[:new_start].blank? || item[:new_finish].blank?
                attend=false unless item[:sperior]=="" || item[:sperior]==nil
                break

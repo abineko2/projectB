@@ -2,11 +2,9 @@
 <%=provide(:button,"更新") %>
 <% casedata=User.all %>
 <div class="main_title">
-    <% if @users.count==casedata.count %>
+    
      <h1>すべてのユーザー</h1>
-    <% else %>
-      <h1>検索結果</h1>
-    <% end %> 
+    
 </div>
 <div class="page_area">
     <div class="pages">

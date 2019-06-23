@@ -5,6 +5,7 @@ class AttendancesController < ApplicationController
     before_action :pages_block,only:[:goToWork]
     before_action :number_control
     before_action :admin_close,only:[:edit,:update,:create]
+    before_action :log_in_user,only:[:goToWork]
     
     def create       #出退勤時間表示
     
@@ -144,6 +145,14 @@ private
            redirect_to root_url  unless current_user?(@user)
        end       
    end
+   def log_in_user  #ログインしてるかチェック
+     unless login?
+       save_url 
+       flash[:danger] = "ログインしてください"
+       redirect_to login_url
+     end  
+   end
+  
    def pages_block
        
        if login?

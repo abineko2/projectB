@@ -34,6 +34,7 @@
       <%　over_times=Send2.where(sperior:@user.name).count %>
        <% count=sends.count %>
        
+       
        <% count=Attendance.where(sperior:@user.name).where.not(result:"否認").where.not(result:"承認").count %>
        <% notice=Notice.find_by(user_id:@user.id) %>
        <% notice.edit_num=count %>
@@ -147,7 +148,7 @@
                   </td>
                
                   <td>
-                      <% if day.worked_on==Date.today && day.start_at==nil %>
+                      <% if day.worked_on==Date.today && day.start_at==nil  && @link==true %>
                         <%=button_to "出勤",user_attendances_path(@user),class:"btn btn-primary btn-block" %>
                       <% end %>
                   </td>
@@ -172,7 +173,7 @@
                       <% end %>
                   </td>
                   <td>
-                      <% if day.worked_on==Date.today && day.start_at.present? && day.finished_at==nil %>
+                      <% if day.worked_on==Date.today && day.start_at.present? && day.finished_at==nil && @link==true %>
                         <%=button_to "退勤",user_attendances_path(@user),class:"btn btn-primary btn-block" %>
                       <% end %>
                   </td>
