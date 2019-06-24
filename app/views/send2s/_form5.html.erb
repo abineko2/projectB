@@ -38,7 +38,7 @@
                                 <td><%=send.new_finish2.to_s(:time) %></td>
                                 <td><%=user.designated_work_end_time.to_s(:time) %></td>
                                 <td><%=tim=over_calc(send.new_finish2,user.designated_work_end_time) %></td>
-                                <td><%=send.note %></td>
+                                <td><%=send.note2 %></td>
                                 <td><%=af.select :answer, list_answer,{},class:"form-control" %></td>
                                 <td><%=af.check_box :box3,{:checked=>false} %></td>
                                 <td><%=link_to "確認",user_path(user,params:{first_day:@first_day,link:@link}),class:"btn btn-primary" %></td>
