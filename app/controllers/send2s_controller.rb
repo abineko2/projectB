@@ -31,8 +31,9 @@ class Send2sController < ApplicationController  #残業申請アクション
         count=Attendance.where(sperior2:@superior.name,answer:"申告中").count
         num=count+1
         @notice.over_time_num=num
-        @notice.save
         
+       
+    
          unless @send2.sperior2==nil
            user=User.find_by(name:@send2.sperior2)
            notice=Notice.find_by(user_id:user.id)
@@ -71,7 +72,7 @@ class Send2sController < ApplicationController  #残業申請アクション
                  end
                 send3.destroy if Attendance.where(worked_on:tomorrow,user_id:@user.id).count==1
                 
-                
+                @notice.save
                 @send2.update_attributes(send2_parameter)
                 @send2.time=tomorrow.to_s(:date)
                 @send2.worked_on=tomorrow
@@ -89,6 +90,7 @@ class Send2sController < ApplicationController  #残業申請アクション
                  flash[:danger] = "申請したのは勤務時間内です"
                  redirect_to user_url(@user.id,params:{first_day:@first_day})
               else
+                 @notice.save 
                  @send2.update_attributes(send2_parameter)
                  flash[:success] = "残業申請しました"
                  redirect_to user_url(@user.id,params:{first_day:@first_day})
