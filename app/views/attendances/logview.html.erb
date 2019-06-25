@@ -23,29 +23,54 @@
         </thread>
         <tbody>
             <% unless @attends.nil? %>
-            <% @attends.each do |at|  %>
-               <tr>
-                   <td><%=at.worked_on.to_s(:date) %></td>
-                   <td>
-                       <% if at.start_at.nil? %>
-                         <%=at.center_s.to_s(:time) if at.center_s.present? %>
-                       <% else %>
-                         <%=at.start_at.to_s(:time) if at.start_at.present? %>
-                       <% end %>     
-                   </td>
-                   <td>
-                       <% if at.finished_at.nil? %>
-                          <%=at.center_f.to_s(:time) if at.center_f.present? %>
-                       <% else %>
-                         <%=at.finished_at.to_s(:time) if at.finished_at.present? %>
-                       <% end %>
-                  </td>
-                   <td><%=at.new_start.to_s(:time) if at.new_start.present? %></td>
-                   <td><%=at.new_finish.to_s(:time) if at.new_finish.present? %></td>
-                   <td><%=at.sperior %></td>
-                   <td><%=at.updated_at.strftime("%Y/%m/%d") %></td>
-               </tr>
-            <% end %>
+                <% @attends.each do |at|  %>
+                   <tr>
+                       <td><%=at.worked_on.to_s(:date2) %></td>
+                       <td>
+                           <% if at.start_at.nil? %>
+                             <%=at.center_s.to_s(:time) if at.center_s.present? %>
+                           <% else %>
+                             <%=at.start_at.to_s(:time) if at.start_at.present? %>
+                           <% end %>     
+                       </td>
+                       <td>
+                           <% if at.finished_at.nil? %>
+                              <%=at.center_f.to_s(:time) if at.center_f.present? %>
+                           <% else %>
+                             <%=at.finished_at.to_s(:time) if at.finished_at.present? %>
+                           <% end %>
+                      </td>
+                       <td><%=at.new_start.to_s(:time) if at.new_start.present? %></td>
+                       <td><%=at.new_finish.to_s(:time) if at.new_finish.present? %></td>
+                       <td><%=at.sperior %></td>
+                       <td><%=at.updated_at.strftime("%Y/%m/%d") %></td>
+                   </tr>
+                       
+                <% end %>
+            <% else %>
+              <% @attendances2.each  do |at| %>
+                 <tr>
+                       <td><%=at.worked_on.to_s(:date2) %></td>
+                       <td>
+                           <% if at.start_at.nil? %>
+                             <%=at.center_s.to_s(:time) if at.center_s.present? %>
+                           <% else %>
+                             <%=at.start_at.to_s(:time) if at.start_at.present? %>
+                           <% end %>     
+                       </td>
+                       <td>
+                           <% if at.finished_at.nil? %>
+                              <%=at.center_f.to_s(:time) if at.center_f.present? %>
+                           <% else %>
+                             <%=at.finished_at.to_s(:time) if at.finished_at.present? %>
+                           <% end %>
+                      </td>
+                       <td><%=at.new_start.to_s(:time) if at.new_start.present? %></td>
+                       <td><%=at.new_finish.to_s(:time) if at.new_finish.present? %></td>
+                       <td><%=at.sperior %></td>
+                       <td><%=at.updated_at.strftime("%Y/%m/%d") %></td>
+                   </tr>
+              <% end %>
             <% end %>
         </tbody>
     </table>

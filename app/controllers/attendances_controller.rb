@@ -91,6 +91,7 @@ class AttendancesController < ApplicationController
         @attendance=Attendance.new
         @user=User.find(params[:id])
         @attendances=@user.attendances.where(result:"承認")
+        @attendances2=@user.attendances.where(result:"承認",month:@first_day.to_s(:months))
         if request.post?
             @attends=@attendances.where(month:params[:month],year:params[:year])
         
