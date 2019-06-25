@@ -3,7 +3,7 @@ require 'date'
 require 'time'
 
 
-CSV.generate do |csv|
+CSV.generate(encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true) do |csv|
   add_colum=%w(月日 出勤 退勤)
   
   csv <<add_colum
